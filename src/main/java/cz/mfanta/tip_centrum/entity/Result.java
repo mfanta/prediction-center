@@ -19,11 +19,9 @@ public class Result implements Serializable {
 	@Column(name = "awayTeamScore")
 	private int awayGoals;
 
-	protected Result() {
-	}
+	protected Result() {}
 
 	public Result(long fixtureId, int homeGoals, int awayGoals) {
-		super();
 		this.fixtureId = fixtureId;
 		this.homeGoals = homeGoals;
 		this.awayGoals = awayGoals;
@@ -45,6 +43,18 @@ public class Result implements Serializable {
 		this.homeGoals = homeGoals;
 		this.awayGoals = awayGoals;
 	}
+
+	public boolean isHomeWin() {
+        return homeGoals > awayGoals;
+    }
+
+    public boolean isDraw() {
+        return homeGoals == awayGoals && homeGoals != -1;
+    }
+
+    public boolean isAwayWin() {
+        return homeGoals < awayGoals;
+    }
 
 	@Override
 	public String toString() {
