@@ -59,4 +59,12 @@ public class ColorPickerTest {
         // Assert
         assertThat(pickedColor, is(Colors.AWAY_WIN_BG_COLOR));
     }
+
+    @Test
+    public void handlesNullResult() throws Exception {
+        // Act
+        Color pickedColor = colorPicker.pickResultColor(null);
+        // Assert
+        assertThat(pickedColor, is(Colors.DEFAULT_RESULT_COLOR));
+    }
 }
