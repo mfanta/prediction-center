@@ -15,18 +15,24 @@ import javax.swing.table.TableColumnModel;
 
 import cz.mfanta.tip_centrum.service.resource.ResourceManager;
 import cz.mfanta.tip_centrum.view.listeners.*;
-import cz.mfanta.tip_centrum.view.model.FixtureTableDesign;
-import cz.mfanta.tip_centrum.view.model.FixtureTableModel;
-import cz.mfanta.tip_centrum.view.model.StatsTableDesign;
-import cz.mfanta.tip_centrum.view.model.StatsTableModel;
+import cz.mfanta.tip_centrum.view.model.*;
 import cz.mfanta.tip_centrum.view.render.PredictionCellRenderer;
+import cz.mfanta.tip_centrum.view.render.RendererConfiguration;
 import cz.mfanta.tip_centrum.view.render.ResultCellRenderer;
 import cz.mfanta.tip_centrum.view.render.TeamCellRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 
+@Import({
+        RendererConfiguration.class,
+        TableModelConfiguration.class
+})
 @Component
 public class MainWindowCreator implements Runnable {
+
+    @Autowired
+    private ResultCellRenderer resultCellRenderer;
 
 	@Autowired
 	private FixtureTableModel fixtureTableModel;
@@ -57,10 +63,9 @@ public class MainWindowCreator implements Runnable {
 
 	private JFrame mainFrame;
 
-	@Override
 	public void run() {
 		mainFrame = new JFrame(MAIN_WINDOW_TITLE);
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		final JTable statsTable = createStatsTable();
 		final JTable fixtureTable = createFixtureTable(statsTable);
 		createMenuBar();
@@ -114,7 +119,7 @@ public class MainWindowCreator implements Runnable {
 		predictionColumn.setCellRenderer(new PredictionCellRenderer(fixtureTableModel));
 		// predictionColumn.setCellEditor(null);
 		final TableColumn resultColumn = fixtureTable.getColumn(FixtureTableDesign.COLUMN_RESULT);
-		resultColumn.setCellRenderer(new ResultCellRenderer());
+		resultColumn.setCellRenderer(resultCellRenderer);
 		// resultColumn.setCellEditor(null);
 		fixtureTablePredictionUpdater.setFixtureTable(fixtureTable);
 		fixtureTable.addMouseListener(fixtureTablePredictionUpdater);
