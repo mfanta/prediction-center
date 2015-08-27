@@ -4,18 +4,23 @@ import java.awt.Color;
 
 public interface Colors {
 	
-	public static final Color PREDICTION_FG_COLOR = Color.MAGENTA;
+	Color PREDICTION_FG_COLOR = Color.MAGENTA;
 	// light blue
-	public static final Color EMPTY_PREDICTION_BG_COLOR = new Color(135, 206, 250);
-	public static final Color NO_RESULT_PREDICTION_BG_COLOR = Color.WHITE;
+	Color EMPTY_PREDICTION_BG_COLOR = new Color(135, 206, 250);
+	Color NO_RESULT_PREDICTION_BG_COLOR = Color.WHITE;
 	// light bright green
-	public static final Color EXACT_PREDICTION_BG_COLOR = new Color(127, 255, 0);
+	Color EXACT_PREDICTION_BG_COLOR = new Color(127, 255, 0);
 	// light pale green
-	public static final Color ACCURATE_PREDICTION_BG_COLOR = new Color(152, 251, 152);
+	Color ACCURATE_PREDICTION_BG_COLOR = new Color(152, 251, 152);
 	// pink
-	public static final Color INACCURATE_PREDICTION_COLOR = new Color(255, 192, 203);
-	public static final Color HIGHLIGHTED_TEAM_BG_COLOR = Color.GREEN;
-	public static final Color SELECTED_TEAM_BG_COLOR = Color.GRAY;
-	public static final Color NORMAL_TEAM_BG_COLOR = Color.WHITE;
+	Color INACCURATE_PREDICTION_COLOR = new Color(255, 192, 203);
+	Color HIGHLIGHTED_TEAM_BG_COLOR = Color.GREEN;
+	Color SELECTED_TEAM_BG_COLOR = Color.GRAY;
+	Color NORMAL_TEAM_BG_COLOR = Color.WHITE;
 
+	// result colors
+    Color HOME_WIN_BG_COLOR = Color.GREEN;
+    Color DRAW_BG_COLOR = Color.ORANGE;
+    Color AWAY_WIN_BG_COLOR = Color.RED;
+    Color DEFAULT_RESULT_COLOR = Color.WHITE;
 }
