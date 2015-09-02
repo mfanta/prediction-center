@@ -19,8 +19,8 @@ public interface Colors {
 	Color NORMAL_TEAM_BG_COLOR = Color.WHITE;
 
 	// result colors
-    Color HOME_WIN_BG_COLOR = Color.GREEN;
-    Color DRAW_BG_COLOR = Color.ORANGE;
-    Color AWAY_WIN_BG_COLOR = Color.RED;
+    Color HOME_WIN_BG_COLOR = new Color(51, 204, 51);
+    Color DRAW_BG_COLOR = new Color(255, 153, 0);
+    Color AWAY_WIN_BG_COLOR = new Color(255, 102, 102);
     Color DEFAULT_RESULT_COLOR = Color.WHITE;
 }
