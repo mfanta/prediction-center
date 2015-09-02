@@ -1,22 +1,6 @@
 package cz.mfanta.tip_centrum.entity.reader.provider.pinnacle;
 
-import static cz.mfanta.tip_centrum.entity.reader.provider.pinnacle.PinnacleConstants.FIXTURE_DATE_FORMAT;
-import static cz.mfanta.tip_centrum.entity.reader.provider.pinnacle.PinnacleConstants.GMT_TIME_ZONE;
-
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
-import cz.mfanta.tip_centrum.entity.Fixture;
-import cz.mfanta.tip_centrum.entity.FixtureGroup;
-import cz.mfanta.tip_centrum.entity.IFixtureGroup;
-import cz.mfanta.tip_centrum.entity.Odds;
-import cz.mfanta.tip_centrum.entity.Prediction;
-import cz.mfanta.tip_centrum.entity.Team;
+import cz.mfanta.tip_centrum.entity.*;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
 import cz.mfanta.tip_centrum.entity.manager.IOddsManager;
 import cz.mfanta.tip_centrum.entity.manager.ITeamManager;
@@ -24,14 +8,24 @@ import cz.mfanta.tip_centrum.exception.ConversionException;
 import cz.mfanta.tip_centrum.general.GeneralConstants;
 import cz.mfanta.tip_centrum.service.fixture.FixtureService;
 import cz.mfanta.tip_centrum.service.log.LogMessageBuilder;
-import cz.mfanta.tip_centrum.service.log.LogService;
-import cz.mfanta.tip_centrum.service.log.Severity;
 import cz.mfanta.tip_centrum.service.parser.DateParser;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import java.util.Date;
+
+import static cz.mfanta.tip_centrum.entity.reader.provider.pinnacle.PinnacleConstants.FIXTURE_DATE_FORMAT;
+import static cz.mfanta.tip_centrum.entity.reader.provider.pinnacle.PinnacleConstants.GMT_TIME_ZONE;
 
 /**
  * This class is definitely not thread-safe!
  */
 @Component
+@Slf4j
 public class PinnacleFixtureHandler extends DefaultHandler {
 
 	/**
@@ -53,10 +47,6 @@ public class PinnacleFixtureHandler extends DefaultHandler {
 
     private String competitionName;
 
-	// services
-	@Autowired
-	private LogService logService;
-	
 	@Autowired
 	private LogMessageBuilder logMessageBuilder;
 
@@ -112,7 +102,7 @@ public class PinnacleFixtureHandler extends DefaultHandler {
 
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
-		chars += new String(ch, start, length).trim();
+		chars += new String(ch, start, length);
 	}
 
 	@Override
@@ -129,7 +119,7 @@ public class PinnacleFixtureHandler extends DefaultHandler {
 			result = PinnacleElement.valueOf(PinnacleElement.class, elementName);
 		} catch (IllegalArgumentException iae) {
 			// ignore the element we're not interested in
-			logService.logMessage(Severity.DBG, iae.getMessage());
+			log.debug(iae.getMessage());
 		}
 		return result;
 	}
@@ -150,16 +140,20 @@ public class PinnacleFixtureHandler extends DefaultHandler {
 		if (allMoneylinesDefined()) {
 			fixtureId = parseFixtureId();
 			fixtureDate = parseFixtureDate();
-			final Odds newOdds = buildNewOdds();
-			Fixture fixture = fixtureManager.getFixture(fixtureId);
-			if (fixture == null) {
-				fixture = createNewFixture(newOdds);
-			} else {
-				updateFixture(fixture, newOdds);
-			}
-			fixtureGroup.addFixture(fixture);
+			if (fixtureDate != null) {
+                final Odds newOdds = buildNewOdds();
+                Fixture fixture = fixtureManager.getFixture(fixtureId);
+                if (fixture == null) {
+                    fixture = createNewFixture(newOdds);
+                } else {
+                    updateFixture(fixture, newOdds);
+                }
+                fixtureGroup.addFixture(fixture);
+            } else {
+                log.warn("Skipping fixture with invalid date {}", dateString);
+            }
 		} else {
-			logService.logInfo("Not all moneylines defined for the match between \'" + homeTeamName + "\' and \'" + awayTeamName + "\'");
+			log.info("Not all moneylines defined for the match between \'" + homeTeamName + "\' and \'" + awayTeamName + "\'");
 		}
 	}
 
@@ -175,7 +169,7 @@ public class PinnacleFixtureHandler extends DefaultHandler {
 		if (oddsManager.oddsChanged(storedOdds, odds)) {
 			oddsManager.storeOdds(odds);
 			fixture.setOdds(odds);
-			logService.logInfo(logMessageBuilder.buildChangedOddsMesage(fixture, storedOdds, odds));
+			log.info(logMessageBuilder.buildChangedOddsMesage(fixture, storedOdds, odds));
 		}
 	}
 
@@ -211,7 +205,7 @@ public class PinnacleFixtureHandler extends DefaultHandler {
 		try {
 			result = fixtureService.moneylineToOdds(moneyline);
 		} catch (ConversionException e) {
-			logService.logException(e, Severity.WRN);
+			log.warn("Exception while converting moneyline to odds", e);
 			result = GeneralConstants.INVALID_ODDS;
 		}
 		return result;
