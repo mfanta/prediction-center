@@ -49,7 +49,7 @@ public class FixtureTableModel extends AbstractTableModel implements IService {
 	@Autowired
 	private ResultRenderer resultRenderer;
 
-	private IFixtureGroup fixtures;
+	private IFixtureGroup fixtures = new EmptyFixtureGroup();
 
 	public void reload() {
 		try {
