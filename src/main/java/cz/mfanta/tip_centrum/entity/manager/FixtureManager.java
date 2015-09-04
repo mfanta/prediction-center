@@ -29,7 +29,6 @@ public class FixtureManager extends AbstractService implements IFixtureManager {
 	@Autowired
 	private FixtureDao fixtureDao;
 
-	@Override
 	public IFixtureGroup getAllUpcomingFixtures() {
 		IFixtureGroup result = null;
 		// merge the fixtures from all the available competitions
@@ -47,7 +46,6 @@ public class FixtureManager extends AbstractService implements IFixtureManager {
 		return result;
 	}
 
-	@Override
 	public IFixtureGroup getAllFixtures() {
 		final IFixtureGroup upcomingFixtures = getAllUpcomingFixtures();
 		final IFixtureGroup storedFixtures = getStoredFixtures();
@@ -55,7 +53,6 @@ public class FixtureManager extends AbstractService implements IFixtureManager {
 		return upcomingFixtures;
 	}
 
-	@Override
 	public IFixtureGroup getStoredFixtures() {
 		final FixtureGroup result = new FixtureGroup();
 		final List<Fixture> storedFixtureList = fixtureDao.getAll();
@@ -65,17 +62,14 @@ public class FixtureManager extends AbstractService implements IFixtureManager {
 		return result;
 	}
 
-	@Override
 	public IFixtureGroup getUpcomingFixturesForCompetition(Competition competition) {
 		return fixtureReader.getFixturesForCompetition(competition);
 	}
 
-	@Override
 	public Fixture getFixture(long fixtureId) {
 		return fixtureDao.getById(fixtureId);
 	}
 	
-	@Override
 	public Fixture createFixture(long fixtureId, String competitionName, Team homeTeam, Team awayTeam, Date fixtureDate, Odds odds, Prediction prediction,
 		Result result) {
 		final Fixture fixture = new Fixture(fixtureId, competitionName, homeTeam, awayTeam, fixtureDate, odds, prediction, result);
@@ -83,12 +77,10 @@ public class FixtureManager extends AbstractService implements IFixtureManager {
 		return fixture;
 	}
 
-	@Override
 	public void updateFixture(Fixture fixture) {
 		fixtureDao.update(fixture);
 	}
 
-	@Override
 	public void updateTeamInFixtures(Team oldTeam, Team newTeam) {
 		final String oldTeamName = oldTeam.getName();
 		final List<Fixture> fixturesWithCorrespondingHomeTeam = fixtureDao.findFixturesByHomeTeam(oldTeamName);

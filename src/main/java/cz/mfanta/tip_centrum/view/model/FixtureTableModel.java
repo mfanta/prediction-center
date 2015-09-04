@@ -1,32 +1,41 @@
 package cz.mfanta.tip_centrum.view.model;
 
-import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.*;
-
-import java.util.Date;
-
-import javax.swing.table.AbstractTableModel;
-
-import cz.mfanta.tip_centrum.service.log.LogService;
-import cz.mfanta.tip_centrum.service.log.Severity;
-import cz.mfanta.tip_centrum.view.render.PredictionRenderer;
-import cz.mfanta.tip_centrum.view.render.ResultRenderer;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.mfanta.tip_centrum.entity.*;
 import cz.mfanta.tip_centrum.entity.common.Pair;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
 import cz.mfanta.tip_centrum.service.IService;
 import cz.mfanta.tip_centrum.service.ServiceException;
 import cz.mfanta.tip_centrum.service.format.FormatService;
+import cz.mfanta.tip_centrum.view.render.PredictionRenderer;
+import cz.mfanta.tip_centrum.view.render.ResultRenderer;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.swing.table.AbstractTableModel;
+import java.util.Date;
+
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.AWAY_ODDS_COLUMN_INDEX;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.AWAY_TEAM_COLUMN_INDEX;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.COLUMNS;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.COLUMN_COUNT;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.COMPETITION_COLUMN_INDEX;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.DATE_COLUMN_FORMAT;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.DATE_COLUMN_INDEX;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.DRAW_ODDS_COLUMN_INDEX;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.HOME_ODDS_COLUMN_INDEX;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.HOME_TEAM_COLUMN_INDEX;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.ODDS_COLUMN_FORMAT;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.PREDICTION_COLUMN_INDEX;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.RESULT_COLUMN_INDEX;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.TIME_COLUMN_FORMAT;
+import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.TIME_COLUMN_INDEX;
+
 @Component
+@Slf4j
 public class FixtureTableModel extends AbstractTableModel implements IService {
 
 	private static final long serialVersionUID = 1L;
-
-	@Autowired
-	private LogService logService;
 
 	@Autowired
 	private FormatService formatService;
@@ -47,20 +56,17 @@ public class FixtureTableModel extends AbstractTableModel implements IService {
 			start();
 			fireTableDataChanged();
 		} catch (ServiceException se) {
-			logService.logException(se, Severity.WRN, "Failed to reload fixtures.");
+			log.warn("Failed to reload fixtures.", se);
 		}
 	}
 
-	@Override
 	public void start() throws ServiceException {
 		fixtures = fixtureManager.getAllFixtures();
 	}
 
-	@Override
 	public void stop() throws ServiceException {
 	}
 
-	@Override
 	public int getColumnCount() {
 		return COLUMN_COUNT;
 	}
@@ -70,15 +76,13 @@ public class FixtureTableModel extends AbstractTableModel implements IService {
 		return COLUMNS[column];
 	}
 
-	@Override
 	public int getRowCount() {
 		return fixtures.getCount();
 	}
 
-	@Override
 	public Object getValueAt(int row, int column) {
 		Fixture fixture = getFixture(row);
-		Object result = null;
+		Object result;
 		switch (column) {
         case COMPETITION_COLUMN_INDEX: {
             result  = fixture.getCompetitionName();
@@ -89,47 +93,40 @@ public class FixtureTableModel extends AbstractTableModel implements IService {
         }
 		case DATE_COLUMN_INDEX: {
 			Date date = fixture.getDate();
-			String dateStr = formatService.formatDate(date, DATE_COLUMN_FORMAT);
-			result = dateStr;
+			result = formatService.formatDate(date, DATE_COLUMN_FORMAT);
 			break;
 		}
 		case TIME_COLUMN_INDEX: {
 			Date date = fixture.getDate();
-			String timeStr = formatService.formatDate(date, TIME_COLUMN_FORMAT);
-			result = timeStr;
+			result = formatService.formatDate(date, TIME_COLUMN_FORMAT);
 			break;
 		}
 		case HOME_TEAM_COLUMN_INDEX: {
 			Team homeTeam = fixture.getHomeTeam();
-			String homeTeamName = homeTeam.getName();
-			result = homeTeamName;
+            result = homeTeam.getName();
 			break;
 		}
 		case AWAY_TEAM_COLUMN_INDEX: {
 			Team awayTeam = fixture.getAwayTeam();
-			String awayTeamName = awayTeam.getName();
-			result = awayTeamName;
+			result = awayTeam.getName();
 			break;
 		}
 		case HOME_ODDS_COLUMN_INDEX: {
 			Odds odds = fixture.getOdds();
 			double homeOdds = odds.getHomeOdds() / 1000d;
-			String homeOddsStr = formatService.formatDouble(homeOdds, ODDS_COLUMN_FORMAT);
-			result = homeOddsStr;
+			result = formatService.formatDouble(homeOdds, ODDS_COLUMN_FORMAT);
 			break;
 		}
 		case DRAW_ODDS_COLUMN_INDEX: {
 			Odds odds = fixture.getOdds();
 			double drawOdds = odds.getDrawOdds() / 1000d;
-			String drawOddsStr = formatService.formatDouble(drawOdds, ODDS_COLUMN_FORMAT);
-			result = drawOddsStr;
+			result = formatService.formatDouble(drawOdds, ODDS_COLUMN_FORMAT);
 			break;
 		}
 		case AWAY_ODDS_COLUMN_INDEX: {
 			Odds odds = fixture.getOdds();
 			double awayOdds = odds.getAwayOdds() / 1000d;
-			String awayOddsStr = formatService.formatDouble(awayOdds, ODDS_COLUMN_FORMAT);
-			result = awayOddsStr;
+			result = formatService.formatDouble(awayOdds, ODDS_COLUMN_FORMAT);
 			break;
 		}
 		case PREDICTION_COLUMN_INDEX: {
@@ -152,8 +149,10 @@ public class FixtureTableModel extends AbstractTableModel implements IService {
 	}
 
 	/**
-	 * @param row
-	 * @return
+	 * Retrieve the fixture corresponding to the given row in the fixture table.
+	 *
+	 * @param row The index of the row to retrieve fixtures for.
+	 * @return The fixture corresponding to the given row.
 	 */
 	public Fixture getFixture(int row) {
 		return fixtures.getAt(row);

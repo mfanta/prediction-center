@@ -12,6 +12,6 @@ public interface IFixtureReader {
 	 *            The competition whose fixtures should be returned.
 	 * @return The group of the upcoming fixtures in the given competition.
 	 */
-	public IFixtureGroup getFixturesForCompetition(Competition competition);
+	IFixtureGroup getFixturesForCompetition(Competition competition);
 
 }

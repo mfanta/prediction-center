@@ -35,7 +35,6 @@ public class PinnacleFixtureReader implements IFixtureReader {
 	@Autowired
 	private PinnacleFixtureHandler fixtureHandler;
 
-	@Override
 	public IFixtureGroup getFixturesForCompetition(Competition competition) {
 		IFixtureGroup resultFixtureGroup;
         final String competitionName = competition.getName();

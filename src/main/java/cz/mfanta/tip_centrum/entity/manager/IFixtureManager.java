@@ -12,21 +12,21 @@ import cz.mfanta.tip_centrum.entity.Team;
 
 public interface IFixtureManager extends IEntityManager {
 
-	public IFixtureGroup getAllUpcomingFixtures();
+	IFixtureGroup getAllUpcomingFixtures();
 	
-	public IFixtureGroup getAllFixtures();
+	IFixtureGroup getAllFixtures();
 	
-	public IFixtureGroup getStoredFixtures();
+	IFixtureGroup getStoredFixtures();
 
-	public IFixtureGroup getUpcomingFixturesForCompetition(Competition competition);
+	IFixtureGroup getUpcomingFixturesForCompetition(Competition competition);
 	
-	public Fixture getFixture(long fixtureId);
+	Fixture getFixture(long fixtureId);
 	
-	public Fixture createFixture(long fixtureId, String competitionName, Team homeTeam, Team awayTeam,
-        Date fixtureDate, Odds odds, Prediction prediction, Result result);
+	Fixture createFixture(long fixtureId, String competitionName, Team homeTeam, Team awayTeam,
+						  Date fixtureDate, Odds odds, Prediction prediction, Result result);
 	
-	public void updateFixture(Fixture fixture);
+	void updateFixture(Fixture fixture);
 
-	public void updateTeamInFixtures(Team oldTeam, Team newTeam);
+	void updateTeamInFixtures(Team oldTeam, Team newTeam);
 
 }
