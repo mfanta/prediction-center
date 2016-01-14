@@ -1,0 +1,31 @@
+As a user...
+
+* 1. I want to be able to see a list of upcoming fixtures.
+* 2. I want to be able to see the odds for each fixture.
+* 3. I want to be able to assign a prediction to a fixture.
+* 4. I want to be able to see the results of finished fixtures.
+* 5. I want to be able to compare my predictions to the actual results.
+* 6. I want to be able to see point evaluation of resolved predictions.
+7. I want to be able to select the set of competitions I'm working with.
+* 8. I want to be able to see the statistics of my predictions.
+9. I want to be able to get the bookmaker with the best odds for my selected prediction.
+10. I want to be able to define a set of bookmakers I'm working with.
+11. I want to be able to define a period I'm interested in, past for results, future for predictions.
+12. I want to be able to add a bet to the system.
+13. I want to be able to see the bet result.
+14. I want to be able to see bet statistics.
+15. I want to be able to see previous results of a team.
+16. I want to be able to see my prediction accuracy for a particular team.
+17. I want to be able to see the odds history for a particular fixture.
+18. I want to be able to get notifications for changed odds.
+19. I want to be able to see my outcomes/losses for various betting strategies (equal betts, weighted bets etc.).
+20. I want to be able to assign each prediction/bet a confidence.
+21. I want to be able to check my stats filtered by prediction confidence.
+
+Features and Enhancements:
+
+When is a user story considered to be complete?
+code written
+all acceptance criteria met
+unit tests written and passing
+code review done

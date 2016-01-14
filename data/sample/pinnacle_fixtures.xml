@@ -1,0 +1,63 @@
+<event>
+<event_datetimeGMT>2010-08-14 11:45</event_datetimeGMT>
+<gamenumber>172763986</gamenumber>
+<sporttype>Soccer</sporttype>
+<league>Eng. Premier</league>
+
+<participants>
+
+<participant>
+<participant_name>Tottenham Hotspur</participant_name>
+<contestantnum>2001</contestantnum>
+<rotnum>2001</rotnum>
+<visiting_home_draw>Home</visiting_home_draw>
+</participant>
+
+<participant>
+<participant_name>Manchester City</participant_name>
+<contestantnum>2002</contestantnum>
+<rotnum>2002</rotnum>
+<visiting_home_draw>Visiting</visiting_home_draw>
+</participant>
+
+<participant>
+<participant_name>Draw</participant_name>
+<contestantnum>2003</contestantnum>
+<rotnum>2003</rotnum>
+<visiting_home_draw>Draw</visiting_home_draw>
+</participant>
+</participants>
+
+<periods>
+
+<period>
+<period_number>0</period_number>
+<period_description>Game</period_description>
+<periodcutoff_datetimeGMT>2010-08-14 11:45</periodcutoff_datetimeGMT>
+<period_status>I</period_status>
+<period_update>open</period_update>
+<spread_maximum>2000</spread_maximum>
+<moneyline_maximum>1000</moneyline_maximum>
+<total_maximum>1000</total_maximum>
+
+<moneyline>
+<moneyline_visiting>209</moneyline_visiting>
+<moneyline_home>151</moneyline_home>
+<moneyline_draw>236</moneyline_draw>
+</moneyline>
+
+<spread>
+<spread_visiting>0.25</spread_visiting>
+<spread_adjust_visiting>-123</spread_adjust_visiting>
+<spread_home>-0.25</spread_home>
+<spread_adjust_home>114</spread_adjust_home>
+</spread>
+
+<total>
+<total_points>2.5</total_points>
+<over_adjust>108</over_adjust>
+<under_adjust>-119</under_adjust>
+</total>
+</period>
+</periods>
+</event>
