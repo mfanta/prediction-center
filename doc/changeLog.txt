@@ -1,0 +1,2 @@
+Jan 14 2015
+* Finally finished switching to Java class based Spring configuration.
