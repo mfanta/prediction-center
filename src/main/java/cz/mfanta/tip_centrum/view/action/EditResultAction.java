@@ -1,30 +1,30 @@
 package cz.mfanta.tip_centrum.view.action;
 
-import javax.swing.JFrame;
-
 import cz.mfanta.tip_centrum.entity.Fixture;
 import cz.mfanta.tip_centrum.entity.Result;
 import cz.mfanta.tip_centrum.entity.common.Pair;
-import cz.mfanta.tip_centrum.entity.manager.ResultManager;
+import cz.mfanta.tip_centrum.entity.manager.IResultManager;
 import cz.mfanta.tip_centrum.view.dialog.EditMatchDialog;
 import cz.mfanta.tip_centrum.view.dialog.EditResultDialogDesign;
 import cz.mfanta.tip_centrum.view.model.FixtureTableModel;
 
+import javax.swing.*;
+
 public class EditResultAction implements TipCentrumAction {
 
+	private final JFrame mainFrame;
+	private final Pair<Integer, Integer> modelCell;
+	private final IResultManager resultManager;
+
 	public EditResultAction(JFrame mainFrame, FixtureTableModel fixtureTableModel, Pair<Integer, Integer> modelCell,
-			ResultManager resultManager) {
+							IResultManager resultManager) {
 		super();
 		this.mainFrame = mainFrame;
 		this.fixtureTableModel = fixtureTableModel;
 		this.modelCell = modelCell;
 		this.resultManager = resultManager;
 	}
-
-	private final JFrame mainFrame;
 	private final FixtureTableModel fixtureTableModel;
-	private final Pair<Integer, Integer> modelCell;
-	private final ResultManager resultManager;
 
 	@Override
 	public void performAction() {

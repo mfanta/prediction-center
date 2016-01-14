@@ -8,8 +8,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import com.google.common.collect.Sets;
 
-import cz.mfanta.tip_centrum.service.gui.Colors;
-
 public class TeamCellRenderer extends DefaultTableCellRenderer {
 
 	private static final long serialVersionUID = 2112326023478010676L;

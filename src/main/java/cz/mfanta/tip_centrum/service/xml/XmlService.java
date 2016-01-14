@@ -1,31 +1,22 @@
 package cz.mfanta.tip_centrum.service.xml;
 
-import javax.xml.parsers.*;
-
-import org.springframework.stereotype.Component;
+import cz.mfanta.tip_centrum.service.AbstractService;
+import cz.mfanta.tip_centrum.service.ServiceException;
 import org.w3c.tidy.Tidy;
 import org.xml.sax.SAXException;
 
-import cz.mfanta.tip_centrum.service.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
-@Component
 public class XmlService extends AbstractService {
 
-	private SAXParser saxParser;
-
-	@Override
-	public void start() throws ServiceException {
+	public SAXParser getSaxParser() throws ServiceException {
 		try {
-			saxParser = SAXParserFactory.newInstance().newSAXParser();
-		} catch (SAXException se) {
-			throw new ServiceException("Failed to create a SAX Parser", se);
-		} catch (ParserConfigurationException pce) {
-			throw new ServiceException("Failed to create a SAX Parser", pce);
+			return SAXParserFactory.newInstance().newSAXParser();
+		} catch (SAXException | ParserConfigurationException e) {
+			throw new ServiceException("Failed to create a SAX Parser", e);
 		}
-	}
-
-	public SAXParser getSaxParser() {
-		return saxParser;
 	}
 
 	public Tidy getTidyParser() {

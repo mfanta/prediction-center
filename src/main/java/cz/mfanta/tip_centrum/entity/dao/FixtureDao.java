@@ -1,28 +1,32 @@
 package cz.mfanta.tip_centrum.entity.dao;
 
+import com.google.common.collect.Lists;
+import cz.mfanta.tip_centrum.entity.Fixture;
+/*
+import cz.mfanta.tip_centrum.entity.Fixture_;
+import cz.mfanta.tip_centrum.entity.Team;
+import cz.mfanta.tip_centrum.entity.Team_;
+*/
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import cz.mfanta.tip_centrum.entity.Fixture;
-import cz.mfanta.tip_centrum.entity.Fixture_;
-import cz.mfanta.tip_centrum.entity.Team;
-import cz.mfanta.tip_centrum.entity.Team_;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+public class FixtureDao extends AbstractDao<Fixture> implements IFixtureDao {
 
-@Repository
-public class FixtureDao extends AbstractDao<Fixture> {
-
-    public FixtureDao() {
+    public FixtureDao(EntityManager entityManager) {
+		super(entityManager);
         setClazz(Fixture.class);
     }
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Fixture findFixtureByTeamsAndDate(String homeTeamName, String awayTeamName, Date date) {
+		return null;
+/*
 		// JPA criteria approach is significantly more complicated than Hibernate native one
 		final EntityManager entityManager = getEntityManager();
 		final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -49,9 +53,12 @@ public class FixtureDao extends AbstractDao<Fixture> {
 			fixture = resultList.get(0);
 		}
 		return fixture;
+*/
 	}
 
 	public List<Fixture> findFixturesByHomeTeam(String homeTeamName) {
+		return Lists.newArrayList();
+/*
 		final EntityManager entityManager = getEntityManager();
 		final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		final CriteriaQuery<Fixture> query = criteriaBuilder.createQuery(Fixture.class);
@@ -60,9 +67,12 @@ public class FixtureDao extends AbstractDao<Fixture> {
 		final Predicate homeTeamPredicate = criteriaBuilder.equal(fixtureHomeTeamJoin.get(Team_.name), homeTeamName);
 		query.where(homeTeamPredicate);
 		return entityManager.createQuery(query).getResultList();
+*/
 	}
     
 	public List<Fixture> findFixturesByAwayTeam(String awayTeamName) {
+		return Lists.newArrayList();
+/*
 		final EntityManager entityManager = getEntityManager();
 		final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		final CriteriaQuery<Fixture> query = criteriaBuilder.createQuery(Fixture.class);
@@ -71,6 +81,7 @@ public class FixtureDao extends AbstractDao<Fixture> {
 		final Predicate awayTeamPredicate = criteriaBuilder.equal(fixtureAwayTeamJoin.get(Team_.name), awayTeamName);
 		query.where(awayTeamPredicate);
 		return entityManager.createQuery(query).getResultList();
+*/
 	}
 
 }

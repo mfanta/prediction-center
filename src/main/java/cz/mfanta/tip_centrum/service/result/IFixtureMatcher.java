@@ -14,6 +14,5 @@ public interface IFixtureMatcher {
 	 * @param result The result for which the fixture should be found.
 	 * @return A fixture object if a corresponding fixture exists. Null otherwise.
 	 */
-	public Fixture getFixtureForResult(ResultFromReader result);
-
+	Fixture getFixtureForResult(ResultFromReader result);
 }

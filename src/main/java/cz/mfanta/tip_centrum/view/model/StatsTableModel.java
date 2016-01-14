@@ -1,27 +1,22 @@
 package cz.mfanta.tip_centrum.view.model;
 
-import javax.swing.table.AbstractTableModel;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import cz.mfanta.tip_centrum.entity.IFixtureGroup;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
 import cz.mfanta.tip_centrum.entity.stats.CompletePredictionStats;
 import cz.mfanta.tip_centrum.service.stats.StatsService;
+import lombok.RequiredArgsConstructor;
 
+import javax.swing.table.AbstractTableModel;
 import java.text.DecimalFormat;
 
-@Component
+@RequiredArgsConstructor
 public class StatsTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -6902519743018556408L;
 	
-	@Autowired
-	private StatsService statsService;
+	private final StatsService statsService;
 	
-	@Autowired
-	private IFixtureManager fixtureManager;
+	private final IFixtureManager fixtureManager;
 	
 	private CompletePredictionStats stats;
 

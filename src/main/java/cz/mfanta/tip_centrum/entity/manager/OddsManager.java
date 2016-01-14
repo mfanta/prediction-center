@@ -1,17 +1,15 @@
 package cz.mfanta.tip_centrum.entity.manager;
 
-import cz.mfanta.tip_centrum.entity.dao.OddsDao;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.mfanta.tip_centrum.entity.Odds;
+import cz.mfanta.tip_centrum.entity.dao.IOddsDao;
+import cz.mfanta.tip_centrum.entity.dao.OddsDao;
 import cz.mfanta.tip_centrum.service.AbstractService;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 
-@Component
+@RequiredArgsConstructor
 public class OddsManager extends AbstractService implements IOddsManager {
 	
-	@Autowired
-	private OddsDao oddsDao;
+	private final IOddsDao oddsDao;
 	
 	@Override
 	public Odds loadOdds(long fixtureId) {

@@ -1,23 +1,30 @@
 package cz.mfanta.tip_centrum.view.listeners;
 
 import cz.mfanta.tip_centrum.entity.common.Pair;
+import cz.mfanta.tip_centrum.service.gui.MainFrameListener;
+import cz.mfanta.tip_centrum.service.gui.MainWindowCreator;
 import cz.mfanta.tip_centrum.utils.SwingUtils;
 import cz.mfanta.tip_centrum.view.action.ActionPerformer;
 import cz.mfanta.tip_centrum.view.model.FixtureTableModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-@Component
-public class EnterPredictionOrResultKeyListener extends KeyAdapter {
+public class EnterPredictionOrResultKeyListener extends KeyAdapter implements MainFrameListener {
 
-    private JTable fixtureTable;
+    private final ActionPerformer actionPerformer;
 
-    @Autowired
-    private ActionPerformer actionPerformer;
+    private final MainWindowCreator mainWindowCreator;
+
+    public EnterPredictionOrResultKeyListener(
+            ActionPerformer actionPerformer,
+            MainWindowCreator mainWindowCreator
+    ) {
+        this.actionPerformer = actionPerformer;
+        this.mainWindowCreator = mainWindowCreator;
+        mainWindowCreator.addMainFrameListener(this);
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -33,8 +40,9 @@ public class EnterPredictionOrResultKeyListener extends KeyAdapter {
         }
     }
 
-    public void setFixtureTable(JTable fixtureTable) {
-        this.fixtureTable = fixtureTable;
+    @Override
+    public void mainFrameCreated() {
+        mainWindowCreator.getFixtureTable().addKeyListener(this);
     }
 
     private boolean isEnterKey(int keyCode) {
@@ -43,12 +51,16 @@ public class EnterPredictionOrResultKeyListener extends KeyAdapter {
 
     private Pair<Integer, Integer> getSingleSelectedModelCell() {
         Pair<Integer, Integer> selectedModelCell = null;
-        final int[] selectedColumns = fixtureTable.getSelectedColumns();
-        final int[] selectedRows = fixtureTable.getSelectedRows();
+        final int[] selectedColumns = getFixtureTable().getSelectedColumns();
+        final int[] selectedRows = getFixtureTable().getSelectedRows();
         if (selectedColumns.length == 1 || selectedRows.length == 1) {
-            final Pair<Integer, Integer> tableCell = new Pair<Integer, Integer>(selectedRows[0], selectedColumns[0]);
-            selectedModelCell = SwingUtils.getModelCellFromTableCell(fixtureTable, tableCell);
+            final Pair<Integer, Integer> tableCell = new Pair<>(selectedRows[0], selectedColumns[0]);
+            selectedModelCell = SwingUtils.getModelCellFromTableCell(getFixtureTable(), tableCell);
         }
         return selectedModelCell;
+    }
+
+    private JTable getFixtureTable() {
+        return mainWindowCreator.getFixtureTable();
     }
 }

@@ -1,17 +1,14 @@
 package cz.mfanta.tip_centrum.entity.manager;
 
-import cz.mfanta.tip_centrum.entity.dao.PredictionDao;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.mfanta.tip_centrum.entity.Prediction;
+import cz.mfanta.tip_centrum.entity.dao.IPredictionDao;
 import cz.mfanta.tip_centrum.service.AbstractService;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 
-@Component
+@RequiredArgsConstructor
 public class PredictionManager extends AbstractService implements IPredictionManager {
 
-	@Autowired
-	private PredictionDao predictionDao;
+	private final IPredictionDao predictionDao;
 
 	@Override
 	public Prediction loadPrediction(long fixtureId) {

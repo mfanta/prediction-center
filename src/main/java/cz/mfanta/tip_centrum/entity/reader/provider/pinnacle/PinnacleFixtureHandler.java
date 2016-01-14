@@ -9,9 +9,9 @@ import cz.mfanta.tip_centrum.general.GeneralConstants;
 import cz.mfanta.tip_centrum.service.fixture.FixtureService;
 import cz.mfanta.tip_centrum.service.log.LogMessageBuilder;
 import cz.mfanta.tip_centrum.service.parser.DateParser;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -24,8 +24,9 @@ import static cz.mfanta.tip_centrum.entity.reader.provider.pinnacle.PinnacleCons
 /**
  * This class is definitely not thread-safe!
  */
-@Component
+
 @Slf4j
+@RequiredArgsConstructor
 public class PinnacleFixtureHandler extends DefaultHandler {
 
 	/**
@@ -47,23 +48,21 @@ public class PinnacleFixtureHandler extends DefaultHandler {
 
     private String competitionName;
 
-	@Autowired
-	private LogMessageBuilder logMessageBuilder;
+	private final LogMessageBuilder logMessageBuilder;
 
-	@Autowired
-	private ITeamManager teamManager;
-	
-	@Autowired
-	private IOddsManager oddsManager;
+	private final DateParser dateParser;
 
-	@Autowired
-	private DateParser dateParser;
-	
-	@Autowired
-	private FixtureService fixtureService;
+	private final FixtureService fixtureService;
 
-	@Autowired
+    @Setter
+    private ITeamManager teamManager;
+
+    @Setter
+    private IOddsManager oddsManager;
+
+	@Setter
 	private IFixtureManager fixtureManager;
+
 	private Date fixtureDate;
 
 	/**
@@ -169,7 +168,7 @@ public class PinnacleFixtureHandler extends DefaultHandler {
 		if (oddsManager.oddsChanged(storedOdds, odds)) {
 			oddsManager.storeOdds(odds);
 			fixture.setOdds(odds);
-			log.info(logMessageBuilder.buildChangedOddsMesage(fixture, storedOdds, odds));
+			log.info(logMessageBuilder.buildChangedOddsMessage(fixture, storedOdds, odds));
 		}
 	}
 

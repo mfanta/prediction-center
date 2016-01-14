@@ -4,8 +4,8 @@ import cz.mfanta.tip_centrum.entity.Result;
 
 public interface IResultManager {
 
-	public Result loadResult(long fixtureId);
+	Result loadResult(long fixtureId);
 	
-	public void storeResult(Result result);
+	void storeResult(Result result);
 
 }

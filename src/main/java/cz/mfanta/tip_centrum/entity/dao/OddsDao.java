@@ -1,12 +1,13 @@
 package cz.mfanta.tip_centrum.entity.dao;
 
 import cz.mfanta.tip_centrum.entity.Odds;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public class OddsDao extends AbstractDao<Odds> {
+import javax.persistence.EntityManager;
 
-    public OddsDao() {
+public class OddsDao extends AbstractDao<Odds> implements IOddsDao {
+
+    public OddsDao(EntityManager entityManager) {
+        super(entityManager);
         setClazz(Odds.class);
     }
 }

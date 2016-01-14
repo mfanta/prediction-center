@@ -1,39 +1,29 @@
 package cz.mfanta.tip_centrum.entity.reader.provider.pinnacle;
 
-import java.io.InputStream;
-
-import javax.xml.parsers.SAXParser;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.mfanta.tip_centrum.entity.Competition;
 import cz.mfanta.tip_centrum.entity.IFixtureGroup;
 import cz.mfanta.tip_centrum.entity.PredefinedEntities;
 import cz.mfanta.tip_centrum.entity.reader.IFixtureReader;
 import cz.mfanta.tip_centrum.service.config.ConfigService;
 import cz.mfanta.tip_centrum.service.http.HttpService;
-import cz.mfanta.tip_centrum.service.log.LogService;
 import cz.mfanta.tip_centrum.service.xml.XmlService;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@Component
+import javax.xml.parsers.SAXParser;
+import java.io.InputStream;
+
+@RequiredArgsConstructor
+@Slf4j
 public class PinnacleFixtureReader implements IFixtureReader {
 
-	// services
-	@Autowired
-	private ConfigService configService;
-	
-	@Autowired
-	private LogService logService;
-	
-	@Autowired
-	private HttpService httpService;
-	
-	@Autowired
-	private XmlService xmlService;
+	private final ConfigService configService;
 
-	@Autowired
-	private PinnacleFixtureHandler fixtureHandler;
+	private final HttpService httpService;
+	
+	private final XmlService xmlService;
+
+	private final PinnacleFixtureHandler fixtureHandler;
 
 	public IFixtureGroup getFixturesForCompetition(Competition competition) {
 		IFixtureGroup resultFixtureGroup;
@@ -41,13 +31,13 @@ public class PinnacleFixtureReader implements IFixtureReader {
         InputStream is = getInputStream(competitionName);
 		// we'll use a SAX parser to parse the HTML hoping the HTML is a
 		// well-formatted XHTML
-		final SAXParser parser = xmlService.getSaxParser();
 		try {
+			final SAXParser parser = xmlService.getSaxParser();
             fixtureHandler.setCompetitionName(competitionName);
 			parser.parse(is, fixtureHandler);
 			resultFixtureGroup = fixtureHandler.getFixtureGroup();
 		} catch (Exception e) {
-			logService.logException(e);
+			log.error("Exception while parsing fixtures", e);
 			// return an empty fixture group
 			resultFixtureGroup = PredefinedEntities.EMPTY_FIXTURE_GROUP;
 		}

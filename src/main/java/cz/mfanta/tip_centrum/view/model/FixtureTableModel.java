@@ -3,14 +3,10 @@ package cz.mfanta.tip_centrum.view.model;
 import cz.mfanta.tip_centrum.entity.*;
 import cz.mfanta.tip_centrum.entity.common.Pair;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
-import cz.mfanta.tip_centrum.service.IService;
 import cz.mfanta.tip_centrum.service.ServiceException;
 import cz.mfanta.tip_centrum.service.format.FormatService;
-import cz.mfanta.tip_centrum.view.render.PredictionRenderer;
-import cz.mfanta.tip_centrum.view.render.ResultRenderer;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Date;
@@ -31,23 +27,19 @@ import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.RESULT_COLUMN_
 import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.TIME_COLUMN_FORMAT;
 import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.TIME_COLUMN_INDEX;
 
-@Component
 @Slf4j
-public class FixtureTableModel extends AbstractTableModel implements IService {
+@RequiredArgsConstructor
+public class FixtureTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
-	private FormatService formatService;
+	private final FormatService formatService;
 	
-	@Autowired
-	private IFixtureManager fixtureManager;
+	private final IFixtureManager fixtureManager;
 	
-	@Autowired
-	private PredictionRenderer predictionRenderer;
+	private final PredictionRenderer predictionRenderer;
 	
-	@Autowired
-	private ResultRenderer resultRenderer;
+	private final ResultRenderer resultRenderer;
 
 	private IFixtureGroup fixtures = new EmptyFixtureGroup();
 
@@ -62,9 +54,6 @@ public class FixtureTableModel extends AbstractTableModel implements IService {
 
 	public void start() throws ServiceException {
 		fixtures = fixtureManager.getAllFixtures();
-	}
-
-	public void stop() throws ServiceException {
 	}
 
 	public int getColumnCount() {

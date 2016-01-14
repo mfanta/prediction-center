@@ -1,9 +1,7 @@
-package cz.mfanta.tip_centrum.view.render;
+package cz.mfanta.tip_centrum.view.model;
 
 import cz.mfanta.tip_centrum.entity.Prediction;
-import org.springframework.stereotype.Component;
 
-@Component
 public class PredictionRenderer {
 
 	public String renderPrediction(Prediction prediction) {

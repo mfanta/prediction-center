@@ -2,7 +2,6 @@ package cz.mfanta.tip_centrum.view.render;
 
 import cz.mfanta.tip_centrum.entity.Fixture;
 import cz.mfanta.tip_centrum.entity.Result;
-import cz.mfanta.tip_centrum.service.gui.ColorPicker;
 import cz.mfanta.tip_centrum.view.model.FixtureTableModel;
 import lombok.RequiredArgsConstructor;
 

@@ -3,6 +3,7 @@ package cz.mfanta.tip_centrum.service.result;
 import java.io.InputStream;
 import java.util.Collection;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import cz.mfanta.tip_centrum.entity.reader.IResultReader;
@@ -10,17 +11,14 @@ import cz.mfanta.tip_centrum.entity.reader.ResultFromReader;
 import cz.mfanta.tip_centrum.service.config.ConfigService;
 import cz.mfanta.tip_centrum.service.http.HttpService;
 
-@Component
+@RequiredArgsConstructor
 public class ResultRetriever implements IResultRetriever {
 
-	@Autowired
-	private ConfigService configService;
+	private final ConfigService configService;
 
-	@Autowired
-	private HttpService httpService;
+	private final HttpService httpService;
 
-	@Autowired
-	private IResultReader resultReader;
+	private final IResultReader resultReader;
 
 	@Override
 	public Collection<ResultFromReader> getResultsForCompetition(String competitionName) {

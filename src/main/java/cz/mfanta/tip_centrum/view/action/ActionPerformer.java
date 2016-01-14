@@ -1,48 +1,59 @@
 package cz.mfanta.tip_centrum.view.action;
 
 import cz.mfanta.tip_centrum.entity.common.Pair;
-import cz.mfanta.tip_centrum.entity.manager.FixtureManager;
-import cz.mfanta.tip_centrum.entity.manager.PredictionManager;
-import cz.mfanta.tip_centrum.entity.manager.ResultManager;
-import cz.mfanta.tip_centrum.entity.manager.TeamManager;
+import cz.mfanta.tip_centrum.entity.manager.*;
 import cz.mfanta.tip_centrum.service.gui.GuiService;
+import cz.mfanta.tip_centrum.service.gui.MainWindowCreator;
 import cz.mfanta.tip_centrum.view.model.FixtureTableModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 
-@Component
+@RequiredArgsConstructor
 public class ActionPerformer {
 
-    @Autowired
-    private GuiService guiService;
+    private final MainWindowCreator mainWindowCreator;
 
-    @Autowired
-    private FixtureTableModel fixtureTableModel;
+    private final GuiService guiService;
 
-    @Autowired
-    private ResultManager resultManager;
+    private final FixtureTableModel fixtureTableModel;
 
-    @Autowired
-    private PredictionManager predictionManager;
+    private final IResultManager resultManager;
 
-	@Autowired
-	private TeamManager teamManager;
+    private final IPredictionManager predictionManager;
 
-	@Autowired
-	private FixtureManager fixtureManager;
+	private final ITeamManager teamManager;
+
+	private final IFixtureManager fixtureManager;
 
     public void performEditResultAction(Pair<Integer, Integer> modelCell) {
-        final EditResultAction action = new EditResultAction(guiService.getMainFrame(), fixtureTableModel, modelCell, resultManager);
+        final EditResultAction action =
+                new EditResultAction(
+                        mainWindowCreator.getMainFrame(),
+                        fixtureTableModel,
+                        modelCell,
+                        resultManager
+                );
         action.performAction();
     }
 
     public void performEditPredictionAction(Pair<Integer, Integer> modelCell) {
-        final EditPredictionAction action = new EditPredictionAction(guiService.getMainFrame(), fixtureTableModel, modelCell, predictionManager);
+        final EditPredictionAction action =
+                new EditPredictionAction(
+                        mainWindowCreator.getMainFrame(),
+                        fixtureTableModel,
+                        modelCell,
+                        predictionManager
+                );
         action.performAction();
     }
 
 	public void performAddAliasAction() {
-		final AddAliasAction action = new AddAliasAction(guiService.getMainFrame(), teamManager, fixtureManager, guiService);
+		final AddAliasAction action =
+                new AddAliasAction(
+                        mainWindowCreator.getMainFrame(),
+                        teamManager,
+                        fixtureManager,
+                        guiService
+                );
 		action.performAction();
 	}
 }

@@ -12,7 +12,6 @@ import com.mysql.jdbc.StringUtils;
 import cz.mfanta.tip_centrum.entity.Fixture;
 import cz.mfanta.tip_centrum.entity.Prediction;
 import cz.mfanta.tip_centrum.entity.Result;
-import cz.mfanta.tip_centrum.service.gui.Colors;
 import cz.mfanta.tip_centrum.view.model.FixtureTableModel;
 
 public class PredictionCellRenderer extends DefaultTableCellRenderer {

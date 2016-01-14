@@ -3,29 +3,23 @@ package cz.mfanta.tip_centrum.entity.manager;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 
 import cz.mfanta.tip_centrum.entity.Competition;
 import cz.mfanta.tip_centrum.service.AbstractService;
 import cz.mfanta.tip_centrum.service.config.ConfigService;
-import org.springframework.stereotype.Component;
 
-@Component
+@RequiredArgsConstructor
 public class CompetitionManager extends AbstractService implements ICompetitionManager {
 
-	@Autowired
-	private ConfigService configService;
+	private final ConfigService configService;
 
 	private Set<Competition> allCompetitions;
-
-	public CompetitionManager() {
-		allCompetitions = null;
-	}
 
 	@Override
 	public Set<Competition> getAllCompetitions() {
 		if (allCompetitions == null) {
-			allCompetitions = new HashSet<Competition>();
+			allCompetitions = new HashSet<>();
 			final String[] compNames = configService.getCompetitionNames();
 			for (String compName : compNames) {
 				final Competition comp = createCompetition(compName);
@@ -36,8 +30,7 @@ public class CompetitionManager extends AbstractService implements ICompetitionM
 	}
 
 	private static Competition createCompetition(String compName) {
-		final Competition result = new Competition(compName);
-		return result;
+		return new Competition(compName);
 	}
 
 }

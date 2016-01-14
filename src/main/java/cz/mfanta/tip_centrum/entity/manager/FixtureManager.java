@@ -1,33 +1,24 @@
 package cz.mfanta.tip_centrum.entity.manager;
 
-import java.util.*;
-
-import cz.mfanta.tip_centrum.entity.dao.FixtureDao;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import cz.mfanta.tip_centrum.entity.Competition;
-import cz.mfanta.tip_centrum.entity.Fixture;
-import cz.mfanta.tip_centrum.entity.FixtureGroup;
-import cz.mfanta.tip_centrum.entity.IFixtureGroup;
-import cz.mfanta.tip_centrum.entity.Odds;
-import cz.mfanta.tip_centrum.entity.Prediction;
-import cz.mfanta.tip_centrum.entity.Result;
-import cz.mfanta.tip_centrum.entity.Team;
+import cz.mfanta.tip_centrum.entity.*;
+import cz.mfanta.tip_centrum.entity.dao.IFixtureDao;
 import cz.mfanta.tip_centrum.entity.reader.IFixtureReader;
 import cz.mfanta.tip_centrum.service.AbstractService;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 
-@Component
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+@RequiredArgsConstructor
 public class FixtureManager extends AbstractService implements IFixtureManager {
 
-	@Autowired
-	private IFixtureReader fixtureReader;
+	private final IFixtureReader fixtureReader;
 	
-	@Autowired
-	private ICompetitionManager competitionManager;
+	private final ICompetitionManager competitionManager;
 	
-	@Autowired
-	private FixtureDao fixtureDao;
+	private final IFixtureDao fixtureDao;
 
 	public IFixtureGroup getAllUpcomingFixtures() {
 		IFixtureGroup result = null;
@@ -56,9 +47,7 @@ public class FixtureManager extends AbstractService implements IFixtureManager {
 	public IFixtureGroup getStoredFixtures() {
 		final FixtureGroup result = new FixtureGroup();
 		final List<Fixture> storedFixtureList = fixtureDao.getAll();
-		for (Fixture fixture : storedFixtureList) {
-			result.addFixture(fixture);
-		}
+        storedFixtureList.forEach(result::addFixture);
 		return result;
 	}
 

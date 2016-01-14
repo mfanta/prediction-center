@@ -1,28 +1,26 @@
 package cz.mfanta.tip_centrum.view.action;
 
-import javax.swing.*;
-
-import org.apache.commons.lang3.Validate;
-import com.google.common.base.Strings;
-import cz.mfanta.tip_centrum.entity.Fixture;
 import cz.mfanta.tip_centrum.entity.Team;
-import cz.mfanta.tip_centrum.entity.manager.FixtureManager;
-import cz.mfanta.tip_centrum.entity.manager.TeamManager;
+import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
+import cz.mfanta.tip_centrum.entity.manager.ITeamManager;
 import cz.mfanta.tip_centrum.service.gui.GuiService;
 import cz.mfanta.tip_centrum.view.dialog.AddAliasDialog;
 import cz.mfanta.tip_centrum.view.dialog.AddAliasDialogDesign;
+import org.apache.commons.lang3.Validate;
+
+import javax.swing.*;
 
 public class AddAliasAction implements TipCentrumAction {
 
 	private final JFrame mainFrame;
 
-	private final TeamManager teamManager;
+	private final ITeamManager teamManager;
 
-	private final FixtureManager fixtureManager;
+	private final IFixtureManager fixtureManager;
 
 	private final GuiService guiService;
 
-	public AddAliasAction(JFrame mainFrame, TeamManager teamManager, FixtureManager fixtureManager, GuiService guiService) {
+	public AddAliasAction(JFrame mainFrame, ITeamManager teamManager, IFixtureManager fixtureManager, GuiService guiService) {
 		this.mainFrame = mainFrame;
 		this.teamManager = teamManager;
 		this.fixtureManager = fixtureManager;

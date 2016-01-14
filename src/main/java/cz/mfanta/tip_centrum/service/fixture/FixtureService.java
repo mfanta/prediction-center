@@ -2,9 +2,7 @@ package cz.mfanta.tip_centrum.service.fixture;
 
 import cz.mfanta.tip_centrum.exception.ConversionException;
 import cz.mfanta.tip_centrum.service.AbstractService;
-import org.springframework.stereotype.Component;
 
-@Component
 public class FixtureService extends AbstractService {
 
 	/**

@@ -1,9 +1,7 @@
-package cz.mfanta.tip_centrum.view.render;
+package cz.mfanta.tip_centrum.view.model;
 
 import cz.mfanta.tip_centrum.entity.Result;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ResultRenderer {
 	
 	public String renderResult(Result matchResult) {

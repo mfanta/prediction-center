@@ -1,29 +1,22 @@
 package cz.mfanta.tip_centrum.entity.manager;
 
-import cz.mfanta.tip_centrum.entity.TeamAlias;
-import cz.mfanta.tip_centrum.entity.dao.TeamAliasDao;
-import cz.mfanta.tip_centrum.entity.dao.TeamDao;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.mfanta.tip_centrum.entity.Team;
+import cz.mfanta.tip_centrum.entity.TeamAlias;
+import cz.mfanta.tip_centrum.entity.dao.ITeamAliasDao;
+import cz.mfanta.tip_centrum.entity.dao.ITeamDao;
 import cz.mfanta.tip_centrum.service.AbstractService;
-import cz.mfanta.tip_centrum.service.log.LogService;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@Component
+@RequiredArgsConstructor
+@Slf4j
 public class TeamManager extends AbstractService implements ITeamManager {
 
-	@Autowired
-	private TeamDao teamDao;
+	private final ITeamDao teamDao;
 
-	@Autowired
-	private TeamAliasDao teamAliasDao;
+	private final ITeamAliasDao teamAliasDao;
 
-	@Autowired
-	private FixtureManager fixtureManager;
-
-	@Autowired
-	private LogService logService;
+	private final IFixtureManager fixtureManager;
 
 	@Override
 	public Team getTeamByName(String teamName) {
@@ -70,19 +63,20 @@ public class TeamManager extends AbstractService implements ITeamManager {
 			if (team != null) {
 				final TeamAlias teamAlias = new TeamAlias(team, alias);
 				teamAliasDao.save(teamAlias);
-				logService.logInfo("Alias '" + alias + "' for team '" + primaryTeamName + "' successfully created");
+				log.info("Alias '{}' for team '{}' successfully created", alias, primaryTeamName);
 				final Team aliasTeam = getTeamByName(alias);
 				if (aliasTeam != null) {
-					logService.logInfo("Team with name '" + alias + "' exists. Replacing it with the new primary team '" + primaryTeamName + "' in all " +
-						"fixtures and deleting it");
+					log.info("Team with name '{}' exists. Replacing it with the new primary team " +
+                            "'{}' in all fixtures and deleting it", alias, primaryTeamName);
 					fixtureManager.updateTeamInFixtures(aliasTeam, team);
 					deleteTeam(aliasTeam);
 				}
 			} else {
-				logService.logWarning("Unable to create alias '" + alias + "' for team '" + primaryTeamName + "' as it does not exist");
+				log.warn("Unable to create alias '{}' for team '{}' as it does not exist", alias,
+                        primaryTeamName);
 			}
 		} else {
-			logService.logInfo("Alias '" + alias + "' not created as it is the same as the primary team name");
+			log.info("Alias '{}' not created as it is the same as the primary team name", alias);
 		}
 	}
 }

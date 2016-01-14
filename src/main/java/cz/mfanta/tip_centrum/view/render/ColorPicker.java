@@ -1,4 +1,4 @@
-package cz.mfanta.tip_centrum.service.gui;
+package cz.mfanta.tip_centrum.view.render;
 
 import cz.mfanta.tip_centrum.entity.Result;
 

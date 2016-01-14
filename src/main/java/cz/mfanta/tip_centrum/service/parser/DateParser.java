@@ -1,28 +1,22 @@
 package cz.mfanta.tip_centrum.service.parser;
 
-import java.text.*;
-import java.util.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.mfanta.tip_centrum.general.GeneralConstants;
 import cz.mfanta.tip_centrum.service.AbstractService;
-import cz.mfanta.tip_centrum.service.log.LogService;
-import cz.mfanta.tip_centrum.service.log.Severity;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 
-@Component
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
+
+@Slf4j
 public class DateParser extends AbstractService {
 
 	// date format cache
-	private Map<String, DateFormat> dateFormats;
-
-	@Autowired
-	private LogService logService;
-
-	public DateParser() {
-		dateFormats = new HashMap<String, DateFormat>();
-	}
+	private Map<String, DateFormat> dateFormats = new HashMap<>();
 
 	public Date parseDate(String date, String dateFormat) {
 		return parseDate(date, dateFormat, TimeZone.getDefault());
@@ -34,7 +28,7 @@ public class DateParser extends AbstractService {
 		try {
 			result = df.parse(date);
 		} catch (ParseException pe) {
-			logService.logException(pe, Severity.WRN);
+			log.warn("Error while parsing date", pe);
 			result = null;
 		}
 		return result;
@@ -57,8 +51,7 @@ public class DateParser extends AbstractService {
 	}
 
 	private static String getHashKey(String df, TimeZone tz) {
-		String result = df + GeneralConstants.HASH_DELIMITER + tz.toString();
-		return result;
+		return df + GeneralConstants.HASH_DELIMITER + tz.toString();
 	}
 
 }

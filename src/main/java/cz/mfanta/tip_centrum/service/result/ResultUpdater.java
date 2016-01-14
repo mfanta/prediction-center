@@ -1,30 +1,24 @@
 package cz.mfanta.tip_centrum.service.result;
 
-import java.util.Collection;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import cz.mfanta.tip_centrum.entity.Fixture;
 import cz.mfanta.tip_centrum.entity.Result;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
 import cz.mfanta.tip_centrum.entity.manager.IResultManager;
 import cz.mfanta.tip_centrum.entity.reader.ResultFromReader;
-import cz.mfanta.tip_centrum.service.log.LogService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@Component
+import java.util.Collection;
+
+@Slf4j
+@RequiredArgsConstructor
 public class ResultUpdater implements IResultUpdater {
 
-	@Autowired
-	private IFixtureMatcher fixtureMatcher;
+	private final IFixtureMatcher fixtureMatcher;
 
-	@Autowired
-	private IFixtureManager fixtureManager;
+	private final IFixtureManager fixtureManager;
 
-	@Autowired
-	private IResultManager resultManager;
-
-	@Autowired
-	private LogService logService;
+	private final IResultManager resultManager;
 
 	@Override
 	public void storeResult(ResultFromReader result) {
@@ -39,19 +33,17 @@ public class ResultUpdater implements IResultUpdater {
 				saveChanges(fixture, storedResult);
 			}
 		} else {
-			logService.logInfo("No fixture found for result " + result.toString());
+			log.info("No fixture found for result {}", result);
 		}
 	}
 
 	@Override
 	public void storeResults(Collection<ResultFromReader> results) {
-		for (ResultFromReader result : results) {
-			storeResult(result);
-		}
+        results.forEach(this::storeResult);
 	}
 
 	private void saveChanges(Fixture fixture, Result result) {
-		logService.logInfo("Storing result for fixture '" + fixture.toString() + "'; result = '" + result + "'");
+		log.info("Storing result for fixture '{}'; result = '{}'", fixture, result);
 		fixture.setResult(result);
 		storeUpdatedResult(result);
 		storeUpdatedFixture(fixture);

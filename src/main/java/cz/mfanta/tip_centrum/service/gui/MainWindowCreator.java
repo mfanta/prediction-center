@@ -1,73 +1,62 @@
 package cz.mfanta.tip_centrum.service.gui;
 
-import static cz.mfanta.tip_centrum.service.gui.GuiLabels.MAIN_WINDOW_TITLE;
-import static cz.mfanta.tip_centrum.service.gui.GuiObjects.FIXTURE_TABLE_BODY_FONT;
-import static cz.mfanta.tip_centrum.service.gui.GuiObjects.FIXTURE_TABLE_HEADER_FONT;
-
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.util.Arrays;
+import cz.mfanta.tip_centrum.service.resource.ResourceManager;
+import cz.mfanta.tip_centrum.view.listeners.HighlightingTableRowSelectionListener;
+import cz.mfanta.tip_centrum.view.listeners.StatsUpdatingTableRowSelectionListener;
+import cz.mfanta.tip_centrum.view.model.FixtureTableDesign;
+import cz.mfanta.tip_centrum.view.model.FixtureTableModel;
+import cz.mfanta.tip_centrum.view.model.StatsTableDesign;
+import cz.mfanta.tip_centrum.view.model.StatsTableModel;
+import cz.mfanta.tip_centrum.view.render.PredictionCellRenderer;
+import cz.mfanta.tip_centrum.view.render.ResultCellRenderer;
+import cz.mfanta.tip_centrum.view.render.TeamCellRenderer;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import cz.mfanta.tip_centrum.service.resource.ResourceManager;
-import cz.mfanta.tip_centrum.view.listeners.*;
-import cz.mfanta.tip_centrum.view.model.*;
-import cz.mfanta.tip_centrum.view.render.PredictionCellRenderer;
-import cz.mfanta.tip_centrum.view.render.RendererConfiguration;
-import cz.mfanta.tip_centrum.view.render.ResultCellRenderer;
-import cz.mfanta.tip_centrum.view.render.TeamCellRenderer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Component;
+import static cz.mfanta.tip_centrum.service.gui.GuiLabels.MAIN_WINDOW_TITLE;
+import static cz.mfanta.tip_centrum.service.gui.GuiObjects.FIXTURE_TABLE_BODY_FONT;
+import static cz.mfanta.tip_centrum.service.gui.GuiObjects.FIXTURE_TABLE_HEADER_FONT;
 
-@Import({
-        RendererConfiguration.class,
-        TableModelConfiguration.class
-})
-@Component
+@RequiredArgsConstructor
 public class MainWindowCreator implements Runnable {
 
-    @Autowired
-    private ResultCellRenderer resultCellRenderer;
+	private final FixtureTableModel fixtureTableModel;
 
-	@Autowired
-	private FixtureTableModel fixtureTableModel;
+	private final StatsTableModel statsTableModel;
 
-	@Autowired
-	private StatsTableModel statsTableModel;
+	private final ResourceManager resourceManager;
 
-	@Autowired
-	private ResourceManager resourceManager;
+    private final ResultCellRenderer resultCellRenderer;
 
-	@Autowired
-	private GuiService guiService;
-
-	@Autowired
-	private FixtureTableResultEditor fixtureTableResultEditor;
-
-	@Autowired
-	private FixtureTablePredictionUpdater fixtureTablePredictionUpdater;
-
-	@Autowired
-	private EnterPredictionOrResultKeyListener enterPredictionOrResultKeyListener;
-
-	@Autowired
-	private GetResultsActionListener getResultsActionListener;
-
-	@Autowired
-	private AddAliasActionListener addAliasActionListener;
-
+	@Getter
 	private JFrame mainFrame;
 
-	public void run() {
+    private List<MainFrameListener> mainFrameListeners = new ArrayList<>();
+
+    @Getter
+    private JTable fixtureTable;
+
+	@Getter
+	private JMenuItem getResultsMenuItem;
+
+    @Getter
+    private JMenuItem addAliasMenuItem;
+
+    public void run() {
 		mainFrame = new JFrame(MAIN_WINDOW_TITLE);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		final JTable statsTable = createStatsTable();
-		final JTable fixtureTable = createFixtureTable(statsTable);
+		createFixtureTable(statsTable);
 		createMenuBar();
 		// using JScrollPane as table's parent makes sure the table header is properly shown
 		final JScrollPane tablePane = new JScrollPane(fixtureTable);
@@ -90,11 +79,15 @@ public class MainWindowCreator implements Runnable {
 		mainFrame.setVisible(true);
 		// scroll to the end of fixture table
 		fixtureTable.scrollRectToVisible(fixtureTable.getCellRect(fixtureTableModel.getRowCount() - 1, 0, true));
-		guiService.setMainFrame(mainFrame);
+        fireMainFrameCreatedEvent();
 	}
 
+    public void addMainFrameListener(MainFrameListener listener) {
+        mainFrameListeners.add(listener);
+    }
+
 	private JTable createFixtureTable(JTable statsTable) {
-		JTable fixtureTable = new JTable(fixtureTableModel);
+        fixtureTable = new JTable(fixtureTableModel);
 		fixtureTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		fixtureTable.setAutoCreateRowSorter(true);
 		// sort the table ascending by date and secondary ascending by time
@@ -117,16 +110,8 @@ public class MainWindowCreator implements Runnable {
 		fixtureTable.getColumn(FixtureTableDesign.COLUMN_AWAY_TEAM).setCellRenderer(teamCellRenderer);
 		final TableColumn predictionColumn = fixtureTable.getColumn(FixtureTableDesign.COLUMN_PREDICTION);
 		predictionColumn.setCellRenderer(new PredictionCellRenderer(fixtureTableModel));
-		// predictionColumn.setCellEditor(null);
 		final TableColumn resultColumn = fixtureTable.getColumn(FixtureTableDesign.COLUMN_RESULT);
 		resultColumn.setCellRenderer(resultCellRenderer);
-		// resultColumn.setCellEditor(null);
-		fixtureTablePredictionUpdater.setFixtureTable(fixtureTable);
-		fixtureTable.addMouseListener(fixtureTablePredictionUpdater);
-		fixtureTableResultEditor.setFixtureTable(fixtureTable);
-		fixtureTable.addMouseListener(fixtureTableResultEditor);
-		enterPredictionOrResultKeyListener.setFixtureTable(fixtureTable);
-		fixtureTable.addKeyListener(enterPredictionOrResultKeyListener);
 		final ListSelectionModel fixtureTableSelectionModel = fixtureTable.getSelectionModel();
 		fixtureTableSelectionModel.addListSelectionListener(new HighlightingTableRowSelectionListener(fixtureTable, teamCellRenderer));
 		fixtureTableSelectionModel.addListSelectionListener(new StatsUpdatingTableRowSelectionListener(fixtureTable, statsTable));
@@ -135,6 +120,7 @@ public class MainWindowCreator implements Runnable {
 		for (int i = 0; i < columnModel.getColumnCount(); i++) {
 			columnModel.getColumn(i).setPreferredWidth(FixtureTableDesign.COLUMN_WIDTHS[i]);
 		}
+		fixtureTableModel.reload();
 		return fixtureTable;
 	}
 
@@ -152,16 +138,17 @@ public class MainWindowCreator implements Runnable {
 	private void createMenuBar() {
 		final JMenuBar menuBar = new JMenuBar();
 		final JMenu actionMenu = new JMenu(GuiLabels.ACTION_MENU_LABEL);
-		final JMenuItem getResultsItem = new JMenuItem(GuiLabels.GET_RESULTS_MENU_ITEM_LABEL);
-		getResultsItem.setMnemonic(KeyEvent.VK_G);
-		getResultsItem.addActionListener(getResultsActionListener);
-		actionMenu.add(getResultsItem);
-		final JMenuItem addAliasItem = new JMenuItem(GuiLabels.ADD_ALIAS_MENU_ITEM_LABEL);
-		addAliasItem.setMnemonic(KeyEvent.VK_A);
-		addAliasItem.addActionListener(addAliasActionListener);
-		actionMenu.add(addAliasItem);
+		getResultsMenuItem = new JMenuItem(GuiLabels.GET_RESULTS_MENU_ITEM_LABEL);
+		getResultsMenuItem.setMnemonic(KeyEvent.VK_G);
+		actionMenu.add(getResultsMenuItem);
+        addAliasMenuItem = new JMenuItem(GuiLabels.ADD_ALIAS_MENU_ITEM_LABEL);
+		addAliasMenuItem.setMnemonic(KeyEvent.VK_A);
+		actionMenu.add(addAliasMenuItem);
 		menuBar.add(actionMenu);
 		mainFrame.setJMenuBar(menuBar);
 	}
 
+    private void fireMainFrameCreatedEvent() {
+        mainFrameListeners.forEach(MainFrameListener::mainFrameCreated);
+    }
 }

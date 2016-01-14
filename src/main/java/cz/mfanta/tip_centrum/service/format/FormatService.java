@@ -1,23 +1,19 @@
 package cz.mfanta.tip_centrum.service.format;
 
-import java.text.*;
-import java.util.*;
-
 import cz.mfanta.tip_centrum.service.AbstractService;
-import cz.mfanta.tip_centrum.service.ServiceException;
-import org.springframework.stereotype.Component;
 
-@Component
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 public class FormatService extends AbstractService {
 
-	private Map<String, DateFormat> dateFormats;
-	private Map<String, NumberFormat> numberFormats;
-
-	@Override
-	public void start() throws ServiceException {
-		dateFormats = new HashMap<String, DateFormat>();
-		numberFormats = new HashMap<String, NumberFormat>();
-	}
+	private Map<String, DateFormat> dateFormats = new HashMap<>();
+	private Map<String, NumberFormat> numberFormats = new HashMap<>();
 
 	public DateFormat getDateFormat(String format) {
 		DateFormat result = dateFormats.get(format);
@@ -29,8 +25,7 @@ public class FormatService extends AbstractService {
 
 	public String formatDate(Date date, String format) {
 		DateFormat dateFormat = getDateFormat(format);
-		String result = dateFormat.format(date);
-		return result;
+		return dateFormat.format(date);
 	}
 
 	public NumberFormat getNumberFormat(String format) {
@@ -41,16 +36,9 @@ public class FormatService extends AbstractService {
 		return result;
 	}
 
-	public String formatLong(long number, String format) {
-		NumberFormat numberFormat = getNumberFormat(format);
-		String result = numberFormat.format(number);
-		return result;
-	}
-
 	public String formatDouble(double number, String format) {
 		NumberFormat numberFormat = getNumberFormat(format);
-		String result = numberFormat.format(number);
-		return result;
+		return numberFormat.format(number);
 	}
 
 	private DateFormat createDateFormat(String format) {

@@ -1,5 +1,16 @@
 package cz.mfanta.tip_centrum.entity.reader.provider.scores_pro;
 
+import com.google.common.collect.Lists;
+import cz.mfanta.tip_centrum.entity.Team;
+import cz.mfanta.tip_centrum.entity.manager.ITeamManager;
+import cz.mfanta.tip_centrum.entity.reader.ResultFromReader;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.DateFormat;
@@ -9,19 +20,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-import com.google.common.collect.Lists;
-import cz.mfanta.tip_centrum.entity.Team;
-import cz.mfanta.tip_centrum.entity.manager.TeamManager;
-import cz.mfanta.tip_centrum.entity.reader.ResultFromReader;
-import cz.mfanta.tip_centrum.service.log.LogService;
-import cz.mfanta.tip_centrum.service.log.Severity;
 
 // Date definition:
 // <div class="ncet">
@@ -42,7 +40,8 @@ import cz.mfanta.tip_centrum.service.log.Severity;
 // Away Team:
 // <td class="away uc winteam">Arsenal FC <span class='yellowcard'></span><span class='yellowcard'></span></td>
 
-@Component
+@Slf4j
+@RequiredArgsConstructor
 public class ScoresProResultHandler extends DefaultHandler {
 
 	private static final String DATE_FORMAT_STRING = "EEE dd MMM yyyy z HH:mm";
@@ -61,11 +60,7 @@ public class ScoresProResultHandler extends DefaultHandler {
 	private static final String TIME_ZONE_SUFFIX = " CET";
 	private static final String NEUTRAL_VENUE_SUFFIX = " (n)";
 
-	@Autowired
-	private LogService logService;
-
-	@Autowired
-	private TeamManager teamManager;
+	private final ITeamManager teamManager;
 
 	private boolean readingDate;
 	private boolean readingTime;
@@ -90,7 +85,7 @@ public class ScoresProResultHandler extends DefaultHandler {
 
 	@Override
 	public void startDocument() throws SAXException {
-		logService.logInfo("startDocument");
+		log.info("startDocument");
 		results = Lists.newArrayList();
 		clearFlags();
 		clearBuffers();
@@ -194,16 +189,16 @@ public class ScoresProResultHandler extends DefaultHandler {
 			final Date fixtureDate = getDate();
 			final String homeTeamName = getHomeTeamName();
 			if (homeTeamName == null) {
-				logService.logWarning("Home team not found: '" + homeBuffer + "'");
+				log.warn("Home team not found: '{}'", homeBuffer);
 			} else {
 				final String awayTeamName = getAwayTeamName();
 				if (awayTeamName == null) {
-					logService.logWarning("Away team not found: '" + awayBuffer + "'");
+					log.warn("Away team not found: '{}'", awayBuffer);
 				} else {
 					final int homeGoals = getHomeGoals();
 					final int awayGoals = getAwayGoals();
 					final ResultFromReader result = new ResultFromReader(homeTeamName, awayTeamName, fixtureDate, homeGoals, awayGoals);
-					logService.logInfo("Found result: " + result.toString());
+					log.info("Found result: {}", result.toString());
 					results.add(result);
 				}
 			}
@@ -261,7 +256,7 @@ public class ScoresProResultHandler extends DefaultHandler {
 			}
 			return DATE_FORMAT.parse(dateBuffer + " " + timeBuffer);
 		} catch (ParseException pe) {
-			logService.logException(pe, Severity.ERR, "Unable to parse result fixture date - the format must have changed!");
+			log.error("Unable to parse result fixture date - the format must have changed!", pe);
 			return new Date();
 		}
 	}

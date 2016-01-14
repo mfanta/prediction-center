@@ -1,16 +1,13 @@
 package cz.mfanta.tip_centrum.entity.manager;
 
-import cz.mfanta.tip_centrum.entity.dao.ResultDao;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.mfanta.tip_centrum.entity.Result;
-import org.springframework.stereotype.Component;
+import cz.mfanta.tip_centrum.entity.dao.IResultDao;
+import lombok.RequiredArgsConstructor;
 
-@Component
+@RequiredArgsConstructor
 public class ResultManager implements IResultManager {
 	
-	@Autowired
-	private ResultDao resultDao;
+	private final IResultDao resultDao;
 
 	@Override
 	public Result loadResult(long fixtureId) {

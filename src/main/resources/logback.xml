@@ -6,10 +6,6 @@
         </encoder>
     </appender>
 
-    <logger name="test.myapp.repos">
-        <level value="INFO" />
-    </logger>
-
     <logger name="org.springframework">
         <level value="INFO" />
     </logger>

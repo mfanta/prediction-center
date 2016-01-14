@@ -1,6 +1,8 @@
 package cz.mfanta.tip_centrum.service.gui;
 
 import cz.mfanta.tip_centrum.entity.Result;
+import cz.mfanta.tip_centrum.view.render.ColorPicker;
+import cz.mfanta.tip_centrum.view.render.Colors;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

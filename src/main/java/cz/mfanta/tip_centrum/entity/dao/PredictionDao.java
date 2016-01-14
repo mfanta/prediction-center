@@ -1,12 +1,13 @@
 package cz.mfanta.tip_centrum.entity.dao;
 
 import cz.mfanta.tip_centrum.entity.Prediction;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public class PredictionDao extends AbstractDao<Prediction> {
+import javax.persistence.EntityManager;
 
-    public PredictionDao() {
+public class PredictionDao extends AbstractDao<Prediction> implements IPredictionDao {
+
+    public PredictionDao(EntityManager entityManager) {
+        super(entityManager);
         setClazz(Prediction.class);
     }
 }

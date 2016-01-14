@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import static cz.mfanta.tip_centrum.service.log.Severity.*;
 import static cz.mfanta.tip_centrum.service.log.FormatConstants.*;
 
-@Component
+
 public class LogService extends AbstractService {
 
 	@Autowired
@@ -54,13 +54,11 @@ public class LogService extends AbstractService {
 	}
 
 	private String buildMessage(Severity severity, String message) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(getDate());
-		builder.append(DELIMITER);
-		builder.append(severity);
-		builder.append(DELIMITER);
-		builder.append(message);
-		return builder.toString();
+		return getDate() +
+				DELIMITER +
+				severity +
+				DELIMITER +
+				message;
 	}
 
 	private String getDate() {
