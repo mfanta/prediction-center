@@ -1,2 +1,5 @@
 Jan 14 2015
 * Finally finished switching to Java class based Spring configuration.
+
+Feb 12 2015
+* Fixed a bug causing results read from web not to be updated in database.
