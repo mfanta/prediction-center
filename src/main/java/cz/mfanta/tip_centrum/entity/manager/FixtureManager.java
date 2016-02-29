@@ -3,7 +3,6 @@ package cz.mfanta.tip_centrum.entity.manager;
 import cz.mfanta.tip_centrum.entity.*;
 import cz.mfanta.tip_centrum.entity.dao.IFixtureDao;
 import cz.mfanta.tip_centrum.entity.reader.IFixtureReader;
-import cz.mfanta.tip_centrum.service.AbstractService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
-public class FixtureManager extends AbstractService implements IFixtureManager {
+public class FixtureManager implements IFixtureManager {
 
 	private final IFixtureReader fixtureReader;
 	

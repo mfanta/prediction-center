@@ -6,11 +6,10 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 
 import cz.mfanta.tip_centrum.entity.Competition;
-import cz.mfanta.tip_centrum.service.AbstractService;
 import cz.mfanta.tip_centrum.service.config.ConfigService;
 
 @RequiredArgsConstructor
-public class CompetitionManager extends AbstractService implements ICompetitionManager {
+public class CompetitionManager implements ICompetitionManager {
 
 	private final ConfigService configService;
 

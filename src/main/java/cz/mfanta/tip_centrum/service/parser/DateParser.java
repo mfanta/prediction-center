@@ -1,7 +1,6 @@
 package cz.mfanta.tip_centrum.service.parser;
 
 import cz.mfanta.tip_centrum.general.GeneralConstants;
-import cz.mfanta.tip_centrum.service.AbstractService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.DateFormat;
@@ -13,14 +12,10 @@ import java.util.Map;
 import java.util.TimeZone;
 
 @Slf4j
-public class DateParser extends AbstractService {
+public class DateParser {
 
 	// date format cache
 	private Map<String, DateFormat> dateFormats = new HashMap<>();
-
-	public Date parseDate(String date, String dateFormat) {
-		return parseDate(date, dateFormat, TimeZone.getDefault());
-	}
 
 	public Date parseDate(String date, String dateFormat, TimeZone timeZone) {
 		DateFormat df = getDateFormat(dateFormat, timeZone);

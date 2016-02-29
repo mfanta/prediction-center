@@ -1,6 +1,5 @@
 package cz.mfanta.tip_centrum.service.http;
 
-import cz.mfanta.tip_centrum.service.AbstractService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Slf4j
-public class HttpService extends AbstractService {
+public class HttpService {
 
 	public InputStream getContentAsStream(String url) {
 		HttpClient httpClient = initHttpClient();

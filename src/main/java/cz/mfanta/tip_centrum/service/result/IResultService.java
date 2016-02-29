@@ -1,8 +1,6 @@
 package cz.mfanta.tip_centrum.service.result;
 
-import cz.mfanta.tip_centrum.service.IService;
-
-public interface IResultService extends IService {
+public interface IResultService {
 
 	/**
 	 * Updates the database with latest results.

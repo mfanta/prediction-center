@@ -1,7 +1,5 @@
 package cz.mfanta.tip_centrum.service.format;
 
-import cz.mfanta.tip_centrum.service.AbstractService;
-
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -10,7 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FormatService extends AbstractService {
+public class FormatService {
 
 	private Map<String, DateFormat> dateFormats = new HashMap<>();
 	private Map<String, NumberFormat> numberFormats = new HashMap<>();

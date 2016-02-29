@@ -4,13 +4,12 @@ import cz.mfanta.tip_centrum.entity.Team;
 import cz.mfanta.tip_centrum.entity.TeamAlias;
 import cz.mfanta.tip_centrum.entity.dao.ITeamAliasDao;
 import cz.mfanta.tip_centrum.entity.dao.ITeamDao;
-import cz.mfanta.tip_centrum.service.AbstractService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
-public class TeamManager extends AbstractService implements ITeamManager {
+public class TeamManager implements ITeamManager {
 
 	private final ITeamDao teamDao;
 

@@ -1,12 +1,10 @@
 package cz.mfanta.tip_centrum.service.resource;
 
-import cz.mfanta.tip_centrum.service.AbstractService;
-
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResourceManager extends AbstractService {
+public class ResourceManager {
 
 	private Map<FontInfo, Font> fontMap = new HashMap<>();
 

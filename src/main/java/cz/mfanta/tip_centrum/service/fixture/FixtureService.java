@@ -1,9 +1,8 @@
 package cz.mfanta.tip_centrum.service.fixture;
 
 import cz.mfanta.tip_centrum.exception.ConversionException;
-import cz.mfanta.tip_centrum.service.AbstractService;
 
-public class FixtureService extends AbstractService {
+public class FixtureService {
 
 	/**
 	 * Converts the moneyline presented by the bookmaker to the odds (multiplied

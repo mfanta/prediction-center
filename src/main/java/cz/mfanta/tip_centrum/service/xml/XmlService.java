@@ -1,6 +1,5 @@
 package cz.mfanta.tip_centrum.service.xml;
 
-import cz.mfanta.tip_centrum.service.AbstractService;
 import cz.mfanta.tip_centrum.service.ServiceException;
 import org.w3c.tidy.Tidy;
 import org.xml.sax.SAXException;
@@ -9,7 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class XmlService extends AbstractService {
+public class XmlService {
 
 	public SAXParser getSaxParser() throws ServiceException {
 		try {

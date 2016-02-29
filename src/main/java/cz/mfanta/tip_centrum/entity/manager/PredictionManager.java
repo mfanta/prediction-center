@@ -2,11 +2,10 @@ package cz.mfanta.tip_centrum.entity.manager;
 
 import cz.mfanta.tip_centrum.entity.Prediction;
 import cz.mfanta.tip_centrum.entity.dao.IPredictionDao;
-import cz.mfanta.tip_centrum.service.AbstractService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class PredictionManager extends AbstractService implements IPredictionManager {
+public class PredictionManager implements IPredictionManager {
 
 	private final IPredictionDao predictionDao;
 

@@ -2,12 +2,10 @@ package cz.mfanta.tip_centrum.entity.manager;
 
 import cz.mfanta.tip_centrum.entity.Odds;
 import cz.mfanta.tip_centrum.entity.dao.IOddsDao;
-import cz.mfanta.tip_centrum.entity.dao.OddsDao;
-import cz.mfanta.tip_centrum.service.AbstractService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class OddsManager extends AbstractService implements IOddsManager {
+public class OddsManager implements IOddsManager {
 	
 	private final IOddsDao oddsDao;
 	
