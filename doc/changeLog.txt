@@ -1,5 +1,8 @@
-Jan 14 2015
+Jan 14 2016
 * Finally finished switching to Java class based Spring configuration.
 
-Feb 12 2015
+Feb 12 2016
 * Fixed a bug causing results read from web not to be updated in database.
+
+Feb 29 2016
+* Removed LogService class replaced by SLF4J via Lombok.
