@@ -7,3 +7,6 @@ Feb 12 2016
 Feb 29 2016
 * Removed LogService class replaced by SLF4J via Lombok.
 * Removed obsolete IService interface and AbstractService.
+
+Mar 2 2016
+* Added appassembler support to Maven and "released" version 0.2.3.
