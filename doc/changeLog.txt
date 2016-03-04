@@ -10,3 +10,6 @@ Feb 29 2016
 
 Mar 2 2016
 * Added appassembler support to Maven and "released" version 0.2.3.
+
+Mar 4 2016
+* Added LiquiBase as database schema management tool.
