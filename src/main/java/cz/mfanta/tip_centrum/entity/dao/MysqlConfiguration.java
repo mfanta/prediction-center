@@ -1,5 +1,6 @@
 package cz.mfanta.tip_centrum.entity.dao;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,5 +40,19 @@ public class MysqlConfiguration {
         adapter.setGenerateDdl(false);
         adapter.setDatabase(Database.MYSQL);
         return adapter;
+    }
+
+    @Bean
+    public String liquibaseChangeLogFile() {
+        return "classpath:/cz/mfanta/tip_centrum/entity/dao/change-log.xml";
+    }
+
+    @Bean
+    public SpringLiquibase liquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setDefaultSchema("tip_centrum");
+        liquibase.setDataSource(dataSource());
+        liquibase.setChangeLog(liquibaseChangeLogFile());
+        return liquibase;
     }
 }

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <!--
+        Index naming convention
+          PK__table1__column - primary key
+          FK__table1__table2__column - foreign key, table1 is owning side
+          UX__table1__column - unique index
+          IX__table1__column - non-unique index
+    -->
+
+    <!--
+     Documentation for liquibase xml format:
+     http://www.liquibase.org/documentation/changes/
+    -->
+
+    <!--<changeSet id="1: initial database state" author="Martin Fanta">
+        <createTable tableName="Team">
+            <column name="name" type="varchar(100)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="TeamAlias">
+            <column name="alias" type="varchar(100)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="Odds">
+            <column name="fixtureId" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="homeOdds" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="drawOdds" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="awayOdds" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="Prediction">
+            <column name="fixtureId" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="homeTeamScore" type="integer"/>
+            <column name="awayTeamScore" type="integer"/>
+        </createTable>
+
+        <createTable tableName="Fixture">
+            <column name="fixtureId" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="homeTeamName" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="awayTeamName" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="competitionName" type="varchar(50)"/>
+            <column name="fixtureDate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <createTable tableName="Result">
+            <column name="fixtureId" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="homeTeamScore" type="integer"/>
+            <column name="awayTeamScore" type="integer"/>
+        </createTable>
+
+    </changeSet>-->
+</databaseChangeLog>
