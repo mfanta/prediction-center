@@ -7,6 +7,7 @@ import cz.mfanta.tip_centrum.service.ServiceException;
 import cz.mfanta.tip_centrum.service.format.FormatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.task.AsyncTaskExecutor;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Date;
@@ -40,6 +41,8 @@ public class FixtureTableModel extends AbstractTableModel {
 	private final PredictionRenderer predictionRenderer;
 	
 	private final ResultRenderer resultRenderer;
+
+	private final AsyncTaskExecutor taskScheduler;
 
 	private IFixtureGroup fixtures = new EmptyFixtureGroup();
 

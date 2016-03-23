@@ -2,6 +2,7 @@ package cz.mfanta.tip_centrum.view.model;
 
 import cz.mfanta.tip_centrum.entity.manager.EntityManagerConfiguration;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
+import cz.mfanta.tip_centrum.infrastructure.ThreadPoolConfiguration;
 import cz.mfanta.tip_centrum.service.format.FormatService;
 import cz.mfanta.tip_centrum.service.format.FormatServiceConfiguration;
 import cz.mfanta.tip_centrum.service.stats.StatsService;
@@ -12,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.task.AsyncTaskExecutor;
 
 @Configuration
 @Import({
         FormatServiceConfiguration.class,
         EntityManagerConfiguration.class,
-        StatsServiceConfiguration.class
+        StatsServiceConfiguration.class,
+        ThreadPoolConfiguration.class
 })
 public class TableModelConfiguration {
 
@@ -38,6 +41,9 @@ public class TableModelConfiguration {
 
     @Autowired
     private ColorPicker colorPicker;
+
+    @Autowired
+    private AsyncTaskExecutor taskExecutor;
 
     @Bean
     public ResultCellRenderer resultCellRenderer() {
@@ -60,7 +66,8 @@ public class TableModelConfiguration {
                 formatService,
                 fixtureManager,
                 predictionRenderer,
-                resultRenderer
+                resultRenderer,
+                taskExecutor
         );
     }
 
