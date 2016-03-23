@@ -38,7 +38,7 @@ public class StatsTableModel extends AbstractTableModel {
 		updateStats(fixturesForStats);
 	}
 	
-	public void updateStats(IFixtureGroup fixtures) {
+	private void updateStats(IFixtureGroup fixtures) {
 		stats = statsService.getStats(fixtures);
 	}
 

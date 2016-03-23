@@ -44,15 +44,11 @@ public class FixtureTableModel extends AbstractTableModel {
 	private IFixtureGroup fixtures = new EmptyFixtureGroup();
 
 	public void reload() {
-		try {
-			start();
-			fireTableDataChanged();
-		} catch (ServiceException se) {
-			log.warn("Failed to reload fixtures.", se);
-		}
+		start();
+		fireTableDataChanged();
 	}
 
-	public void start() throws ServiceException {
+	private void start() {
 		fixtures = fixtureManager.getAllFixtures();
 	}
 
