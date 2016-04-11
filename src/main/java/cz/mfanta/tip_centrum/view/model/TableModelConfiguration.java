@@ -7,8 +7,6 @@ import cz.mfanta.tip_centrum.service.format.FormatService;
 import cz.mfanta.tip_centrum.service.format.FormatServiceConfiguration;
 import cz.mfanta.tip_centrum.service.stats.StatsService;
 import cz.mfanta.tip_centrum.service.stats.StatsServiceConfiguration;
-import cz.mfanta.tip_centrum.view.render.ColorPicker;
-import cz.mfanta.tip_centrum.view.render.ResultCellRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,15 +38,7 @@ public class TableModelConfiguration {
     private ResultRenderer resultRenderer;
 
     @Autowired
-    private ColorPicker colorPicker;
-
-    @Autowired
-    private AsyncTaskExecutor taskExecutor;
-
-    @Bean
-    public ResultCellRenderer resultCellRenderer() {
-        return new ResultCellRenderer(fixtureTableModel(), colorPicker);
-    }
+    private AsyncTaskExecutor taskScheduler;
 
     @Bean
     public PredictionRenderer predictionRenderer() {
@@ -67,7 +57,7 @@ public class TableModelConfiguration {
                 fixtureManager,
                 predictionRenderer,
                 resultRenderer,
-                taskExecutor
+                taskScheduler
         );
     }
 
