@@ -3,7 +3,6 @@ package cz.mfanta.tip_centrum.view.model;
 import cz.mfanta.tip_centrum.entity.*;
 import cz.mfanta.tip_centrum.entity.common.Pair;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
-import cz.mfanta.tip_centrum.service.ServiceException;
 import cz.mfanta.tip_centrum.service.format.FormatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,12 +46,7 @@ public class FixtureTableModel extends AbstractTableModel {
 	private IFixtureGroup fixtures = new EmptyFixtureGroup();
 
 	public void reload() {
-		start();
-		fireTableDataChanged();
-	}
-
-	private void start() {
-		fixtures = fixtureManager.getAllFixtures();
+        taskScheduler.submit(reloadRunnable());
 	}
 
 	public int getColumnCount() {
@@ -154,9 +148,15 @@ public class FixtureTableModel extends AbstractTableModel {
 	public static boolean isPredictionCell(Pair<Integer, Integer> cellPosition) {
 		return cellPosition.getSecond() == PREDICTION_COLUMN_INDEX;
 	}
-	
+
 	public static boolean isResultCell(Pair<Integer, Integer> cellPosition) {
 		return cellPosition.getSecond() == RESULT_COLUMN_INDEX;
 	}
 
+    private Runnable reloadRunnable() {
+        return () -> {
+            fixtures = fixtureManager.getAllFixtures();
+            fireTableDataChanged();
+        };
+    }
 }
