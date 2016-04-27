@@ -13,3 +13,6 @@ Mar 2 2016
 
 Mar 4 2016
 * Added LiquiBase as database schema management tool.
+
+Apr 27 2016
+* Added EventBus for event publishing/subscriptions.
