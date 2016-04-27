@@ -1,9 +1,11 @@
 package cz.mfanta.tip_centrum.view.model;
 
+import com.google.common.eventbus.EventBus;
 import cz.mfanta.tip_centrum.entity.*;
 import cz.mfanta.tip_centrum.entity.common.Pair;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
 import cz.mfanta.tip_centrum.service.format.FormatService;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.task.AsyncTaskExecutor;
@@ -28,7 +30,7 @@ import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.TIME_COLUMN_FO
 import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.TIME_COLUMN_INDEX;
 
 @Slf4j
-@RequiredArgsConstructor
+@Builder
 public class FixtureTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
@@ -42,6 +44,8 @@ public class FixtureTableModel extends AbstractTableModel {
 	private final ResultRenderer resultRenderer;
 
 	private final AsyncTaskExecutor taskScheduler;
+
+	private final EventBus eventBus;
 
 	private IFixtureGroup fixtures = new EmptyFixtureGroup();
 

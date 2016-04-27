@@ -1,8 +1,10 @@
 package cz.mfanta.tip_centrum.view.model;
 
+import com.google.common.eventbus.EventBus;
 import cz.mfanta.tip_centrum.entity.manager.EntityManagerConfiguration;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
 import cz.mfanta.tip_centrum.infrastructure.ThreadPoolConfiguration;
+import cz.mfanta.tip_centrum.service.event.EventBusConfiguration;
 import cz.mfanta.tip_centrum.service.format.FormatService;
 import cz.mfanta.tip_centrum.service.format.FormatServiceConfiguration;
 import cz.mfanta.tip_centrum.service.stats.StatsService;
@@ -18,7 +20,8 @@ import org.springframework.core.task.AsyncTaskExecutor;
         FormatServiceConfiguration.class,
         EntityManagerConfiguration.class,
         StatsServiceConfiguration.class,
-        ThreadPoolConfiguration.class
+        ThreadPoolConfiguration.class,
+        EventBusConfiguration.class
 })
 public class TableModelConfiguration {
 
@@ -40,6 +43,9 @@ public class TableModelConfiguration {
     @Autowired
     private AsyncTaskExecutor taskScheduler;
 
+    @Autowired
+    private EventBus eventBus;
+
     @Bean
     public PredictionRenderer predictionRenderer() {
         return new PredictionRenderer();
@@ -52,13 +58,14 @@ public class TableModelConfiguration {
 
     @Bean
     public FixtureTableModel fixtureTableModel() {
-        return new FixtureTableModel(
-                formatService,
-                fixtureManager,
-                predictionRenderer,
-                resultRenderer,
-                taskScheduler
-        );
+        return FixtureTableModel.builder()
+                .formatService(formatService)
+                .fixtureManager(fixtureManager)
+                .predictionRenderer(predictionRenderer)
+                .resultRenderer(resultRenderer)
+                .taskScheduler(taskScheduler)
+                .eventBus(eventBus)
+                .build();
     }
 
     @Bean
