@@ -1,9 +1,11 @@
 package cz.mfanta.tip_centrum.view.model;
 
+import com.google.common.eventbus.EventBus;
 import cz.mfanta.tip_centrum.entity.EmptyFixtureGroup;
 import cz.mfanta.tip_centrum.entity.IFixtureGroup;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
 import cz.mfanta.tip_centrum.infrastructure.ThreadPoolConfiguration;
+import cz.mfanta.tip_centrum.service.event.FixtureModelRefreshedEvent;
 import cz.mfanta.tip_centrum.service.format.FormatService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ContextConfiguration(
@@ -47,13 +50,14 @@ public class FixtureTableModelTest {
                 }
             }
         });
-        FixtureTableModel model = new FixtureTableModel(
-                mock(FormatService.class),
-                fixtureManagerMock,
-                mock(PredictionRenderer.class),
-                mock(ResultRenderer.class),
-                executor
-        );
+        FixtureTableModel model = FixtureTableModel.builder()
+                .formatService(mock(FormatService.class))
+                .fixtureManager(fixtureManagerMock)
+                .predictionRenderer(mock(PredictionRenderer.class))
+                .resultRenderer(mock(ResultRenderer.class))
+                .taskScheduler(executor)
+                .eventBus(mock(EventBus.class))
+                .build();
 
         // run
         model.reload();
@@ -63,5 +67,26 @@ public class FixtureTableModelTest {
 
         // assert
         assertThat(fixtureThread[0], not(is(mainThread)));
+    }
+
+    @Test
+    public void modelPublishesEventOnceFixturesLoaded() throws Exception {
+        // prepare
+        IFixtureManager fixtureManagerMock = mock(IFixtureManager.class);
+        when(fixtureManagerMock.getAllFixtures())
+                .then((Answer<IFixtureGroup>) invocation -> new EmptyFixtureGroup());
+        EventBus eventBus = mock(EventBus.class);
+        FixtureTableModel model = FixtureTableModel.builder()
+                .formatService(mock(FormatService.class))
+                .fixtureManager(fixtureManagerMock)
+                .predictionRenderer(mock(PredictionRenderer.class))
+                .resultRenderer(mock(ResultRenderer.class))
+                .taskScheduler(executor)
+                .eventBus(eventBus)
+                .build();
+        // run
+        model.reload();
+        // assert
+        verify(eventBus).post(new FixtureModelRefreshedEvent());
     }
 }
