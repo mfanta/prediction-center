@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import cz.mfanta.tip_centrum.entity.*;
 import cz.mfanta.tip_centrum.entity.common.Pair;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
+import cz.mfanta.tip_centrum.service.event.FixtureModelRefreshedEvent;
 import cz.mfanta.tip_centrum.service.format.FormatService;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
@@ -160,6 +161,7 @@ public class FixtureTableModel extends AbstractTableModel {
         return () -> {
             fixtures = fixtureManager.getAllFixtures();
             fireTableDataChanged();
+			eventBus.post(new FixtureModelRefreshedEvent());
         };
     }
 }
