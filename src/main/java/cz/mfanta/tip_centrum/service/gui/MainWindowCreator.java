@@ -78,12 +78,16 @@ public class MainWindowCreator implements Runnable {
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		mainFrame.setVisible(true);
 		// scroll to the end of fixture table
-		fixtureTable.scrollRectToVisible(fixtureTable.getCellRect(fixtureTableModel.getRowCount() - 1, 0, true));
-        fireMainFrameCreatedEvent();
+		scrollFixtureTableToEnd();
+		fireMainFrameCreatedEvent();
 	}
 
-    public void addMainFrameListener(MainFrameListener listener) {
+	public void addMainFrameListener(MainFrameListener listener) {
         mainFrameListeners.add(listener);
+    }
+
+    private void scrollFixtureTableToEnd() {
+        fixtureTable.scrollRectToVisible(fixtureTable.getCellRect(fixtureTableModel.getRowCount() - 1, 0, true));
     }
 
 	private JTable createFixtureTable(JTable statsTable) {
