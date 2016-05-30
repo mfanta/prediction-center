@@ -5,11 +5,13 @@ import cz.mfanta.tip_centrum.entity.Fixture;
 import cz.mfanta.tip_centrum.entity.FixtureGroup;
 import cz.mfanta.tip_centrum.service.event.FixturesSelectedEvent;
 import cz.mfanta.tip_centrum.view.model.FixtureTableModel;
+import lombok.Builder;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+@Builder
 public class EventBusTableRowSelectionListener implements ListSelectionListener {
 
     private final JTable fixtureTable;
@@ -17,12 +19,6 @@ public class EventBusTableRowSelectionListener implements ListSelectionListener 
     private final FixtureTableModel fixtureTableModel;
 
     private final EventBus eventBus;
-
-    public EventBusTableRowSelectionListener(JTable fixtureTable, EventBus eventBus) {
-        this.fixtureTable = fixtureTable;
-        this.fixtureTableModel = (FixtureTableModel) fixtureTable.getModel();
-        this.eventBus = eventBus;
-    }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
