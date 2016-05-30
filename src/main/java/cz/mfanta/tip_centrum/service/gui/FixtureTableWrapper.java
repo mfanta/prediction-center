@@ -2,8 +2,8 @@ package cz.mfanta.tip_centrum.service.gui;
 
 import com.google.common.eventbus.EventBus;
 import cz.mfanta.tip_centrum.service.resource.ResourceManager;
-import cz.mfanta.tip_centrum.view.listeners.HighlightingTableRowSelectionListener;
 import cz.mfanta.tip_centrum.view.listeners.EventBusTableRowSelectionListener;
+import cz.mfanta.tip_centrum.view.listeners.HighlightingTableRowSelectionListener;
 import cz.mfanta.tip_centrum.view.model.FixtureTableDesign;
 import cz.mfanta.tip_centrum.view.model.FixtureTableModel;
 import cz.mfanta.tip_centrum.view.render.PredictionCellRenderer;
@@ -66,13 +66,25 @@ public class FixtureTableWrapper {
         resultColumn.setCellRenderer(resultCellRenderer);
         final ListSelectionModel fixtureTableSelectionModel = fixtureTable.getSelectionModel();
         fixtureTableSelectionModel.addListSelectionListener(new HighlightingTableRowSelectionListener(fixtureTable, teamCellRenderer));
-        fixtureTableSelectionModel.addListSelectionListener(new EventBusTableRowSelectionListener(fixtureTable, eventBus));
+        addEventGeneratingSelectionListener();
         final TableColumnModel columnModel = fixtureTable.getColumnModel();
         // set the preferred column widths
         for (int i = 0; i < columnModel.getColumnCount(); i++) {
             columnModel.getColumn(i).setPreferredWidth(FixtureTableDesign.COLUMN_WIDTHS[i]);
         }
         fixtureTableModel.reload();
+    }
+
+    private void addEventGeneratingSelectionListener() {
+        fixtureTable
+                .getSelectionModel()
+                .addListSelectionListener(
+                    EventBusTableRowSelectionListener.builder()
+                            .fixtureTable(fixtureTable)
+                            .fixtureTableModel(fixtureTableModel)
+                            .eventBus(eventBus)
+                            .build()
+                );
     }
 
     public void scrollToEnd() {
