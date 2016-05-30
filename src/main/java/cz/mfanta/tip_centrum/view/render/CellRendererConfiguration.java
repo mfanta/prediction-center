@@ -28,4 +28,9 @@ public class CellRendererConfiguration {
                 colorPicker()
         );
     }
+
+    @Bean
+    public TeamCellRenderer teamCellRenderer() {
+        return new TeamCellRenderer();
+    }
 }
