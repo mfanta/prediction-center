@@ -1,50 +1,38 @@
 package cz.mfanta.tip_centrum.service.gui;
 
-import cz.mfanta.tip_centrum.service.resource.ResourceManager;
-import cz.mfanta.tip_centrum.view.listeners.HighlightingTableRowSelectionListener;
-import cz.mfanta.tip_centrum.view.listeners.StatsUpdatingTableRowSelectionListener;
-import cz.mfanta.tip_centrum.view.model.FixtureTableDesign;
-import cz.mfanta.tip_centrum.view.model.FixtureTableModel;
 import cz.mfanta.tip_centrum.view.model.StatsTableDesign;
 import cz.mfanta.tip_centrum.view.model.StatsTableModel;
-import cz.mfanta.tip_centrum.view.render.PredictionCellRenderer;
-import cz.mfanta.tip_centrum.view.render.ResultCellRenderer;
-import cz.mfanta.tip_centrum.view.render.TeamCellRenderer;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import javax.swing.*;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static cz.mfanta.tip_centrum.service.gui.GuiLabels.MAIN_WINDOW_TITLE;
-import static cz.mfanta.tip_centrum.service.gui.GuiObjects.FIXTURE_TABLE_BODY_FONT;
-import static cz.mfanta.tip_centrum.service.gui.GuiObjects.FIXTURE_TABLE_HEADER_FONT;
 
-@RequiredArgsConstructor
 public class MainWindowCreator implements Runnable {
-
-	private final FixtureTableModel fixtureTableModel;
 
 	private final StatsTableModel statsTableModel;
 
-	private final ResourceManager resourceManager;
+	private final FixtureTableWrapper fixtureTableWrapper;
 
-    private final ResultCellRenderer resultCellRenderer;
+    @Builder
+    private MainWindowCreator(
+            StatsTableModel statsTableModel,
+            FixtureTableWrapper fixtureTableWrapper
+    ) {
+        this.statsTableModel = statsTableModel;
+        this.fixtureTableWrapper = fixtureTableWrapper;
+    }
 
-	@Getter
+    @Getter
 	private JFrame mainFrame;
 
     private List<MainFrameListener> mainFrameListeners = new ArrayList<>();
-
-    @Getter
-    private JTable fixtureTable;
 
 	@Getter
 	private JMenuItem getResultsMenuItem;
@@ -56,10 +44,10 @@ public class MainWindowCreator implements Runnable {
 		mainFrame = new JFrame(MAIN_WINDOW_TITLE);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		final JTable statsTable = createStatsTable();
-		createFixtureTable(statsTable);
+		fixtureTableWrapper.create();
 		createMenuBar();
 		// using JScrollPane as table's parent makes sure the table header is properly shown
-		final JScrollPane tablePane = new JScrollPane(fixtureTable);
+		final JScrollPane tablePane = new JScrollPane(fixtureTableWrapper.getFixtureTable());
 		final GridBagLayout layout = new GridBagLayout();
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -78,7 +66,6 @@ public class MainWindowCreator implements Runnable {
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		mainFrame.setVisible(true);
 		// scroll to the end of fixture table
-		scrollFixtureTableToEnd();
 		fireMainFrameCreatedEvent();
 	}
 
@@ -86,47 +73,9 @@ public class MainWindowCreator implements Runnable {
         mainFrameListeners.add(listener);
     }
 
-    private void scrollFixtureTableToEnd() {
-        fixtureTable.scrollRectToVisible(fixtureTable.getCellRect(fixtureTableModel.getRowCount() - 1, 0, true));
+	public JTable getFixtureTable() {
+        return fixtureTableWrapper.getFixtureTable();
     }
-
-	private JTable createFixtureTable(JTable statsTable) {
-        fixtureTable = new JTable(fixtureTableModel);
-		fixtureTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		fixtureTable.setAutoCreateRowSorter(true);
-		// sort the table ascending by date and secondary ascending by time
-		fixtureTable.getRowSorter().setSortKeys(
-			Arrays.asList(new RowSorter.SortKey(FixtureTableDesign.DATE_COLUMN_INDEX, SortOrder.ASCENDING),
-				new RowSorter.SortKey(FixtureTableDesign.TIME_COLUMN_INDEX, SortOrder.ASCENDING),
-				new RowSorter.SortKey(FixtureTableDesign.HOME_TEAM_COLUMN_INDEX, SortOrder.ASCENDING)));
-		final Font tableHeaderFont = resourceManager.getFont(FIXTURE_TABLE_HEADER_FONT);
-		final JTableHeader header = fixtureTable.getTableHeader();
-		header.setFont(tableHeaderFont);
-		final Font tableFont = resourceManager.getFont(FIXTURE_TABLE_BODY_FONT);
-		fixtureTable.setFont(tableFont);
-		// disable default Enter behavior which is move cell focus one position down
-		fixtureTable.getInputMap(JInternalFrame.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent
-			.VK_ENTER, 0), "none");
-		fixtureTable.getInputMap(JInternalFrame.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-			"none");
-		final TeamCellRenderer teamCellRenderer = new TeamCellRenderer();
-		fixtureTable.getColumn(FixtureTableDesign.COLUMN_HOME_TEAM).setCellRenderer(teamCellRenderer);
-		fixtureTable.getColumn(FixtureTableDesign.COLUMN_AWAY_TEAM).setCellRenderer(teamCellRenderer);
-		final TableColumn predictionColumn = fixtureTable.getColumn(FixtureTableDesign.COLUMN_PREDICTION);
-		predictionColumn.setCellRenderer(new PredictionCellRenderer(fixtureTableModel));
-		final TableColumn resultColumn = fixtureTable.getColumn(FixtureTableDesign.COLUMN_RESULT);
-		resultColumn.setCellRenderer(resultCellRenderer);
-		final ListSelectionModel fixtureTableSelectionModel = fixtureTable.getSelectionModel();
-		fixtureTableSelectionModel.addListSelectionListener(new HighlightingTableRowSelectionListener(fixtureTable, teamCellRenderer));
-		fixtureTableSelectionModel.addListSelectionListener(new StatsUpdatingTableRowSelectionListener(fixtureTable, statsTable));
-		final TableColumnModel columnModel = fixtureTable.getColumnModel();
-		// set the preferred column widths
-		for (int i = 0; i < columnModel.getColumnCount(); i++) {
-			columnModel.getColumn(i).setPreferredWidth(FixtureTableDesign.COLUMN_WIDTHS[i]);
-		}
-		fixtureTableModel.reload();
-		return fixtureTable;
-	}
 
 	private JTable createStatsTable() {
 		final JTable statsTable = new JTable(statsTableModel);
