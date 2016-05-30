@@ -30,7 +30,6 @@ import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.TIME_COLUMN_FO
 import static cz.mfanta.tip_centrum.view.model.FixtureTableDesign.TIME_COLUMN_INDEX;
 
 @Slf4j
-@Builder
 public class FixtureTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
@@ -48,6 +47,23 @@ public class FixtureTableModel extends AbstractTableModel {
 	private final EventBus eventBus;
 
 	private IFixtureGroup fixtures = new EmptyFixtureGroup();
+
+    @Builder
+    private FixtureTableModel(
+            FormatService formatService,
+            IFixtureManager fixtureManager,
+            PredictionRenderer predictionRenderer,
+            ResultRenderer resultRenderer,
+            AsyncTaskExecutor taskScheduler,
+            EventBus eventBus
+    ) {
+        this.formatService = formatService;
+        this.fixtureManager = fixtureManager;
+        this.predictionRenderer = predictionRenderer;
+        this.resultRenderer = resultRenderer;
+        this.taskScheduler = taskScheduler;
+        this.eventBus = eventBus;
+    }
 
 	public void reload() {
         taskScheduler.submit(reloadRunnable());
