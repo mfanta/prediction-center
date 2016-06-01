@@ -6,7 +6,6 @@ import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
 import cz.mfanta.tip_centrum.entity.stats.CompletePredictionStats;
 import cz.mfanta.tip_centrum.service.stats.StatsService;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 
 import javax.swing.table.AbstractTableModel;
 import java.text.DecimalFormat;
