@@ -1,9 +1,12 @@
 package cz.mfanta.tip_centrum.view.model;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import cz.mfanta.tip_centrum.entity.IFixtureGroup;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
 import cz.mfanta.tip_centrum.entity.stats.CompletePredictionStats;
+import cz.mfanta.tip_centrum.service.event.FixturesSelectedEvent;
+import cz.mfanta.tip_centrum.service.event.StatsModelRefreshedEvent;
 import cz.mfanta.tip_centrum.service.stats.StatsService;
 import lombok.Builder;
 
@@ -29,9 +32,16 @@ public class StatsTableModel extends AbstractTableModel {
         this.statsService = statsService;
         this.fixtureManager = fixtureManager;
         this.eventBus = eventBus;
+        eventBus.register(this);
     }
 
     private CompletePredictionStats stats;
+
+    @Subscribe
+    public void handleFixtureSelection(FixturesSelectedEvent fixturesSelectedEvent) {
+        setSelectedFixtures(fixturesSelectedEvent.getSelectedFixtures());
+        eventBus.post(new StatsModelRefreshedEvent());
+    }
 
 	@Override
 	public int getRowCount() {
@@ -43,7 +53,7 @@ public class StatsTableModel extends AbstractTableModel {
 		return StatsTableDesign.COLUMN_COUNT;
 	}
 	
-	public void setSelectedFixtures(IFixtureGroup selectedFixtures) {
+	private void setSelectedFixtures(IFixtureGroup selectedFixtures) {
 		IFixtureGroup fixturesForStats = selectedFixtures;
 		if (selectedFixtures == null) {
 			fixturesForStats = fixtureManager.getAllFixtures();
