@@ -10,7 +10,6 @@ import lombok.Builder;
 import javax.swing.table.AbstractTableModel;
 import java.text.DecimalFormat;
 
-@Builder
 public class StatsTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -6902519743018556408L;
@@ -20,8 +19,19 @@ public class StatsTableModel extends AbstractTableModel {
 	private final IFixtureManager fixtureManager;
 
     private final EventBus eventBus;
-	
-	private CompletePredictionStats stats;
+
+    @Builder
+    private StatsTableModel(
+            StatsService statsService,
+            IFixtureManager fixtureManager,
+            EventBus eventBus
+    ) {
+        this.statsService = statsService;
+        this.fixtureManager = fixtureManager;
+        this.eventBus = eventBus;
+    }
+
+    private CompletePredictionStats stats;
 
 	@Override
 	public int getRowCount() {
