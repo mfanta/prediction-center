@@ -70,6 +70,10 @@ public class TableModelConfiguration {
 
     @Bean
     public StatsTableModel statsTableModel() {
-        return new StatsTableModel(statsService, fixtureManager);
+        return StatsTableModel.builder()
+                .statsService(statsService)
+                .fixtureManager(fixtureManager)
+                .eventBus(eventBus)
+                .build();
     }
 }

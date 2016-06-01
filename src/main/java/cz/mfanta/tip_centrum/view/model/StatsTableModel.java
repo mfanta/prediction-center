@@ -1,15 +1,17 @@
 package cz.mfanta.tip_centrum.view.model;
 
+import com.google.common.eventbus.EventBus;
 import cz.mfanta.tip_centrum.entity.IFixtureGroup;
 import cz.mfanta.tip_centrum.entity.manager.IFixtureManager;
 import cz.mfanta.tip_centrum.entity.stats.CompletePredictionStats;
 import cz.mfanta.tip_centrum.service.stats.StatsService;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 import javax.swing.table.AbstractTableModel;
 import java.text.DecimalFormat;
 
-@RequiredArgsConstructor
+@Builder
 public class StatsTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -6902519743018556408L;
@@ -17,6 +19,8 @@ public class StatsTableModel extends AbstractTableModel {
 	private final StatsService statsService;
 	
 	private final IFixtureManager fixtureManager;
+
+    private final EventBus eventBus;
 	
 	private CompletePredictionStats stats;
 
