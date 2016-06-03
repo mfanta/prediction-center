@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -87,6 +88,6 @@ public class FixtureTableModelTest {
         // run
         model.reload();
         // assert
-        verify(eventBus).post(new FixtureModelRefreshedEvent());
+        verify(eventBus, timeout(100)).post(new FixtureModelRefreshedEvent());
     }
 }
