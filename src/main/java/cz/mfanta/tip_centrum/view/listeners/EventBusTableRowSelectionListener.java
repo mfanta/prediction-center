@@ -28,10 +28,6 @@ public class EventBusTableRowSelectionListener implements ListSelectionListener 
                     .selectedFixtures(selectedFixtures)
                     .build();
             eventBus.post(event);
-            // TODO: Continue here
-            // TODO: Move this code to EventBus event handler
-            // statsTableModel.setSelectedFixtures(selectedFixtures);
-            // statsTable.tableChanged(new TableModelEvent(statsTableModel, 0, statsTableModel.getRowCount() - 1));
         }
     }
 
