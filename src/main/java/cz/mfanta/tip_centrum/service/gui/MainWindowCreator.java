@@ -1,12 +1,9 @@
 package cz.mfanta.tip_centrum.service.gui;
 
-import cz.mfanta.tip_centrum.view.model.StatsTableDesign;
-import cz.mfanta.tip_centrum.view.model.StatsTableModel;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.swing.*;
-import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -16,18 +13,18 @@ import static cz.mfanta.tip_centrum.service.gui.GuiLabels.MAIN_WINDOW_TITLE;
 
 public class MainWindowCreator implements Runnable {
 
-	private final StatsTableModel statsTableModel;
-
 	private final FixtureTableWrapper fixtureTableWrapper;
+
+	private final StatsTableWrapper statsTableWrapper;
 
     @Builder
     private MainWindowCreator(
-            StatsTableModel statsTableModel,
-            FixtureTableWrapper fixtureTableWrapper
+            FixtureTableWrapper fixtureTableWrapper,
+			StatsTableWrapper statsTableWrapper
     ) {
-        this.statsTableModel = statsTableModel;
         this.fixtureTableWrapper = fixtureTableWrapper;
-    }
+		this.statsTableWrapper = statsTableWrapper;
+	}
 
     @Getter
 	private JFrame mainFrame;
@@ -43,7 +40,8 @@ public class MainWindowCreator implements Runnable {
     public void run() {
 		mainFrame = new JFrame(MAIN_WINDOW_TITLE);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		final JTable statsTable = createStatsTable();
+		statsTableWrapper.create();
+        JTable statsTable = statsTableWrapper.getStatsTable();
 		fixtureTableWrapper.create();
 		createMenuBar();
 		// using JScrollPane as table's parent makes sure the table header is properly shown
@@ -76,17 +74,6 @@ public class MainWindowCreator implements Runnable {
 	public JTable getFixtureTable() {
         return fixtureTableWrapper.getFixtureTable();
     }
-
-	private JTable createStatsTable() {
-		final JTable statsTable = new JTable(statsTableModel);
-		statsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		final TableColumnModel columnModel = statsTable.getColumnModel();
-		// set the preferred column widths
-		for (int i = 0; i < columnModel.getColumnCount(); i++) {
-			columnModel.getColumn(i).setPreferredWidth(StatsTableDesign.COLUMN_WIDTHS[i]);
-		}
-		return statsTable;
-	}
 
 	private void createMenuBar() {
 		final JMenuBar menuBar = new JMenuBar();

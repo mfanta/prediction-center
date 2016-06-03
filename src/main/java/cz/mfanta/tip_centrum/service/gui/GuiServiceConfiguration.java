@@ -43,8 +43,7 @@ public class GuiServiceConfiguration {
     private EventBus eventBus;
 
     @Bean
-    public FixtureTableWrapper
-    fixtureTableWrapper() {
+    public FixtureTableWrapper fixtureTableWrapper() {
         return FixtureTableWrapper.builder()
                 .eventBus(eventBus)
                 .fixtureTableModel(fixtureTableModel)
@@ -55,9 +54,16 @@ public class GuiServiceConfiguration {
     }
 
     @Bean
+    public StatsTableWrapper statsTableWrapper() {
+        return StatsTableWrapper.builder()
+                .statsTableModel(statsTableModel)
+                .build();
+    }
+
+    @Bean
     public MainWindowCreator mainWindowCreator() {
         return MainWindowCreator.builder()
-                .statsTableModel(statsTableModel)
+                .statsTableWrapper(statsTableWrapper())
                 .fixtureTableWrapper(fixtureTableWrapper())
                 .build();
     }
