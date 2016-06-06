@@ -1,5 +1,6 @@
 package cz.mfanta.tip_centrum.service.gui;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import cz.mfanta.tip_centrum.service.event.StatsModelRefreshedEvent;
 import cz.mfanta.tip_centrum.view.model.StatsTableDesign;
@@ -11,10 +12,15 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableColumnModel;
 
-@Builder
 class StatsTableWrapper {
 
     private final StatsTableModel statsTableModel;
+
+    @Builder
+    private StatsTableWrapper(StatsTableModel statsTableModel, EventBus eventBus) {
+        this.statsTableModel = statsTableModel;
+        eventBus.register(this);
+    }
 
     @Getter
     private JTable statsTable;

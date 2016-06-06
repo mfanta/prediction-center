@@ -57,6 +57,7 @@ public class GuiServiceConfiguration {
     public StatsTableWrapper statsTableWrapper() {
         return StatsTableWrapper.builder()
                 .statsTableModel(statsTableModel)
+                .eventBus(eventBus)
                 .build();
     }
 
