@@ -5,8 +5,10 @@ import com.google.common.eventbus.Subscribe;
 import cz.mfanta.tip_centrum.service.event.StatsModelRefreshedEvent;
 import cz.mfanta.tip_centrum.view.model.StatsTableDesign;
 import cz.mfanta.tip_centrum.view.model.StatsTableModel;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -23,6 +25,7 @@ class StatsTableWrapper {
     }
 
     @Getter
+    @Setter(AccessLevel.PACKAGE)
     private JTable statsTable;
 
     @Subscribe
