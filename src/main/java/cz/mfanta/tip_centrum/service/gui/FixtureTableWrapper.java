@@ -1,6 +1,8 @@
 package cz.mfanta.tip_centrum.service.gui;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import cz.mfanta.tip_centrum.service.event.FixtureModelRefreshedEvent;
 import cz.mfanta.tip_centrum.service.resource.ResourceManager;
 import cz.mfanta.tip_centrum.view.listeners.EventBusTableRowSelectionListener;
 import cz.mfanta.tip_centrum.view.listeners.HighlightingTableRowSelectionListener;
@@ -23,7 +25,6 @@ import java.util.Arrays;
 import static cz.mfanta.tip_centrum.service.gui.GuiObjects.FIXTURE_TABLE_BODY_FONT;
 import static cz.mfanta.tip_centrum.service.gui.GuiObjects.FIXTURE_TABLE_HEADER_FONT;
 
-@Builder
 public class FixtureTableWrapper {
 
     private final EventBus eventBus;
@@ -38,6 +39,27 @@ public class FixtureTableWrapper {
 
     @Getter
     private JTable fixtureTable;
+
+    @Builder
+    private FixtureTableWrapper(
+            EventBus eventBus,
+            FixtureTableModel fixtureTableModel,
+            ResourceManager resourceManager,
+            ResultCellRenderer resultCellRenderer,
+            TeamCellRenderer teamCellRenderer
+    ) {
+        this.eventBus = eventBus;
+        this.fixtureTableModel = fixtureTableModel;
+        this.resourceManager = resourceManager;
+        this.resultCellRenderer = resultCellRenderer;
+        this.teamCellRenderer = teamCellRenderer;
+        eventBus.register(this);
+    }
+
+    @Subscribe
+    public void handleFixtureModelRefresh(FixtureModelRefreshedEvent event) {
+        scrollToEnd();
+    }
 
     void create() {
         fixtureTable = new JTable(fixtureTableModel);
@@ -75,6 +97,10 @@ public class FixtureTableWrapper {
         fixtureTableModel.reload();
     }
 
+    private void scrollToEnd() {
+        fixtureTable.scrollRectToVisible(fixtureTable.getCellRect(fixtureTableModel.getRowCount() - 1, 0, true));
+    }
+
     private void addEventGeneratingSelectionListener() {
         fixtureTable
                 .getSelectionModel()
@@ -85,9 +111,5 @@ public class FixtureTableWrapper {
                             .eventBus(eventBus)
                             .build()
                 );
-    }
-
-    public void scrollToEnd() {
-        fixtureTable.scrollRectToVisible(fixtureTable.getCellRect(fixtureTableModel.getRowCount() - 1, 0, true));
     }
 }
