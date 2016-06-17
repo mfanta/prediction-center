@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cz.mfanta</groupId>
     <artifactId>prediction-center</artifactId>
-    <version>0.2.4</version>
+    <version>0.2.4-SNAPSHOT</version>
     <name>prediction-center</name>
 
     <scm>
