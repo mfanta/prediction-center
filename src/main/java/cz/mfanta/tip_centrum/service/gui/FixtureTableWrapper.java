@@ -11,8 +11,10 @@ import cz.mfanta.tip_centrum.view.model.FixtureTableModel;
 import cz.mfanta.tip_centrum.view.render.PredictionCellRenderer;
 import cz.mfanta.tip_centrum.view.render.ResultCellRenderer;
 import cz.mfanta.tip_centrum.view.render.TeamCellRenderer;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -38,6 +40,7 @@ public class FixtureTableWrapper {
     private final TeamCellRenderer teamCellRenderer;
 
     @Getter
+    @Setter(AccessLevel.PACKAGE)
     private JTable fixtureTable;
 
     @Builder
