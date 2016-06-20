@@ -16,3 +16,6 @@ Mar 4 2016
 
 Apr 27 2016
 * Added EventBus for event publishing/subscriptions.
+
+Jun 20 2016
+Released version 0.2.5 with EventBus messaging pilot.
