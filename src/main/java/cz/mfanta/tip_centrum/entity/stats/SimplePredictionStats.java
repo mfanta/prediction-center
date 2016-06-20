@@ -35,12 +35,12 @@ class SimplePredictionStats extends AbstractPredictionStats {
 	private void countCorrectPredictions(IFixtureGroup fixtures) {
 		correctPredictionCount = 0;
 		exactPredictionCount = 0;
-		final int fixtureCount = fixtures.getCount();
+		int fixtureCount = fixtures.getCount();
 		for (int index = 0; index < fixtureCount; index++) {
-			final Fixture fixture = fixtures.getAt(index);
+			Fixture fixture = fixtures.getAt(index);
 			if (fixture.isDecided()) {
-				final Result result = fixture.getResult();
-				final Prediction prediction = fixture.getPrediction();
+				Result result = fixture.getResult();
+				Prediction prediction = fixture.getPrediction();
 				if (prediction.isAccurate(result)) {
 					correctPredictionCount++;
 					if (prediction.isExact(result)) {
