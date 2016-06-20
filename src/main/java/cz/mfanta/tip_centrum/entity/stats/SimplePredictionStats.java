@@ -5,22 +5,22 @@ import cz.mfanta.tip_centrum.entity.IFixtureGroup;
 import cz.mfanta.tip_centrum.entity.Prediction;
 import cz.mfanta.tip_centrum.entity.Result;
 
-public class SimplePredictionStats extends AbstractPredictionStats {
+class SimplePredictionStats extends AbstractPredictionStats {
 	
 	private int correctPredictionCount;
 	
 	private int exactPredictionCount;
 
-	public SimplePredictionStats(IFixtureGroup fixtures) {
+	SimplePredictionStats(IFixtureGroup fixtures) {
 		super(fixtures);
 		countCorrectPredictions(fixtures);
 	}
 
-	public int getCorrectPredictionCount() {
+	int getCorrectPredictionCount() {
 		return correctPredictionCount;
 	}
 	
-	public int getExactPredictionCount() {
+	int getExactPredictionCount() {
 		return exactPredictionCount;
 	}
 	
@@ -28,7 +28,7 @@ public class SimplePredictionStats extends AbstractPredictionStats {
 		return getMatchCount() == 0 ? 0 : (10000 * getCorrectPredictionCount()) / getMatchCount();
 	}
 	
-	public int getExactPredictionPercentage() {
+	int getExactPredictionPercentage() {
 		return getMatchCount() == 0 ? 0 : (10000 * getExactPredictionCount()) / getMatchCount();
 	}
 	
