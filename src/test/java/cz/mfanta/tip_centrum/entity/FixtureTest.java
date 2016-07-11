@@ -10,9 +10,13 @@ public class FixtureTest {
     @Test
     public void emptyPredictionCantBeResolved() throws Exception {
         Fixture fixture = new Fixture();
-        fixture.setPrediction(new Prediction(1, -1, -1));
+        fixture.setPrediction(emptyPrediction());
         fixture.setResult(new Result());
 
         assertThat(fixture.canResolvePrediction(), is(false));
+    }
+
+    private Prediction emptyPrediction() {
+        return new Prediction(1, -1, -1);
     }
 }
