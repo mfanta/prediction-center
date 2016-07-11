@@ -118,7 +118,7 @@ public class Fixture implements Serializable {
 	
 	@Transient
 	public boolean isDecided() {
-		return prediction != null && result != null;
+		return prediction != null && !prediction.isEmpty() && result != null;
 	}
 	
 	@Override
