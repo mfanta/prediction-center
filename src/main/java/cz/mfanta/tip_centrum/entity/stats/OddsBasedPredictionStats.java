@@ -35,7 +35,7 @@ public class OddsBasedPredictionStats extends AbstractPredictionStats {
 		balance = 0;
 		for (int index = 0; index < allMatchCount; index++) {
 			final Fixture fixture = fixtures.getAt(index);
-			if (fixture.isDecided()) {
+			if (fixture.canResolvePrediction()) {
 				final Prediction prediction = fixture.getPrediction();
 				final Result result = fixture.getResult();
 				if (prediction.isAccurate(result)) {

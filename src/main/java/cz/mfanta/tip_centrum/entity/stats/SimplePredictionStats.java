@@ -38,7 +38,7 @@ class SimplePredictionStats extends AbstractPredictionStats {
 		int fixtureCount = fixtures.getCount();
 		for (int index = 0; index < fixtureCount; index++) {
 			Fixture fixture = fixtures.getAt(index);
-			if (fixture.isDecided()) {
+			if (fixture.canResolvePrediction()) {
 				Result result = fixture.getResult();
 				Prediction prediction = fixture.getPrediction();
 				if (prediction.isAccurate(result)) {
