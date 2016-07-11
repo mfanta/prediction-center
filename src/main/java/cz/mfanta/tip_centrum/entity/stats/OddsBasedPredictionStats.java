@@ -6,7 +6,7 @@ import cz.mfanta.tip_centrum.entity.Odds;
 import cz.mfanta.tip_centrum.entity.Prediction;
 import cz.mfanta.tip_centrum.entity.Result;
 
-public class OddsBasedPredictionStats extends AbstractPredictionStats {
+class OddsBasedPredictionStats extends AbstractPredictionStats {
 	
 	private int percentage;
 	
@@ -15,7 +15,7 @@ public class OddsBasedPredictionStats extends AbstractPredictionStats {
 	// for badly predicted match, 1000 is subtracted
 	private int balance;
 
-	public OddsBasedPredictionStats(IFixtureGroup fixtures) {
+	OddsBasedPredictionStats(IFixtureGroup fixtures) {
 		super(fixtures);
 		countBalanceAndPercentage(fixtures);
 	}
@@ -25,7 +25,7 @@ public class OddsBasedPredictionStats extends AbstractPredictionStats {
 		return percentage;
 	}
 	
-	public int getBalance() {
+	int getBalance() {
 		return balance;
 	}
 	
