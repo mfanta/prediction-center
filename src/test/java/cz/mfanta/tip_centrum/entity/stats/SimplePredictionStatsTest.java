@@ -27,14 +27,14 @@ public class SimplePredictionStatsTest {
 
     private Fixture fixtureWithoutPrediction() {
         return new Fixture(
-                    45l,
+                    45L,
                     "",
                     null,
                     null,
                     new Date(),
                     null,
-                    new Prediction(45l, -1, -1),
-                    new Result(45l, 1, 2)
+                    new Prediction(45L, -1, -1),
+                    new Result(45L, 1, 2)
             );
     }
 }
