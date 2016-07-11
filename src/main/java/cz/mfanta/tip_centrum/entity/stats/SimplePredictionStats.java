@@ -41,7 +41,7 @@ class SimplePredictionStats extends AbstractPredictionStats {
 			if (fixture.isDecided()) {
 				Result result = fixture.getResult();
 				Prediction prediction = fixture.getPrediction();
-				if (prediction.isAccurate(result)) {
+				if (prediction.isAccurate(result) && !prediction.isEmpty()) {
 					correctPredictionCount++;
 					if (prediction.isExact(result)) {
 						exactPredictionCount++;

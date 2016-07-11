@@ -7,7 +7,7 @@ public abstract class AbstractPredictionStats {
 	
 	private int matchCount;
 
-	public AbstractPredictionStats(IFixtureGroup fixtures) {
+	AbstractPredictionStats(IFixtureGroup fixtures) {
 		super();
 		countMatchCount(fixtures);
 	}
@@ -24,7 +24,7 @@ public abstract class AbstractPredictionStats {
 		matchCount = 0;
 		for (int index = 0; index < allMatchCount; index++) {
 			final Fixture fixture = fixtures.getAt(index);
-			if (fixture.isDecided()) {
+			if (fixture.isDecided() && !fixture.getPrediction().isEmpty()) {
 				matchCount++;
 			}
 		}
