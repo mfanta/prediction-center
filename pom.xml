@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cz.mfanta</groupId>
     <artifactId>prediction-center</artifactId>
-    <version>0.2.7</version>
+    <version>0.2.8-SNAPSHOT</version>
     <name>prediction-center</name>
 
     <scm>
         <connection>scm:git:https://github.com/mfanta/prediction-center.git</connection>
-        <tag>prediction-center-0.2.7</tag>
+        <tag>prediction-center-0.2.4</tag>
     </scm>
 
     <properties />
