@@ -19,11 +19,16 @@ class FixtureManager implements IFixtureManager {
 	
 	private final IFixtureDao fixtureDao;
 
+	private IFixtureGroup allFixtures;
+
 	public IFixtureGroup getAllFixtures() {
-		IFixtureGroup upcomingFixtures = getAllUpcomingFixtures();
-		IFixtureGroup storedFixtures = getStoredFixtures();
-		upcomingFixtures.merge(storedFixtures);
-		return upcomingFixtures;
+	    if (allFixtures == null) {
+            IFixtureGroup upcomingFixtures = getAllUpcomingFixtures();
+            IFixtureGroup storedFixtures = getStoredFixtures();
+            upcomingFixtures.merge(storedFixtures);
+            allFixtures = upcomingFixtures;
+        }
+		return allFixtures;
 	}
 
 	public Fixture getFixture(long fixtureId) {
