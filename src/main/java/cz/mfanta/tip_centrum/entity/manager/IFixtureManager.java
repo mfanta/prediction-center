@@ -12,14 +12,8 @@ import cz.mfanta.tip_centrum.entity.Team;
 
 public interface IFixtureManager extends IEntityManager {
 
-	IFixtureGroup getAllUpcomingFixtures();
-	
 	IFixtureGroup getAllFixtures();
-	
-	IFixtureGroup getStoredFixtures();
 
-	IFixtureGroup getUpcomingFixturesForCompetition(Competition competition);
-	
 	Fixture getFixture(long fixtureId);
 	
 	Fixture createFixture(long fixtureId, String competitionName, Team homeTeam, Team awayTeam,
