@@ -37,15 +37,15 @@ public class FixtureManager implements IFixtureManager {
 	}
 
 	public IFixtureGroup getAllFixtures() {
-		final IFixtureGroup upcomingFixtures = getAllUpcomingFixtures();
-		final IFixtureGroup storedFixtures = getStoredFixtures();
+		IFixtureGroup upcomingFixtures = getAllUpcomingFixtures();
+		IFixtureGroup storedFixtures = getStoredFixtures();
 		upcomingFixtures.merge(storedFixtures);
 		return upcomingFixtures;
 	}
 
 	public IFixtureGroup getStoredFixtures() {
-		final FixtureGroup result = new FixtureGroup();
-		final List<Fixture> storedFixtureList = fixtureDao.getAll();
+		FixtureGroup result = new FixtureGroup();
+		List<Fixture> storedFixtureList = fixtureDao.getAll();
         storedFixtureList.forEach(result::addFixture);
 		return result;
 	}
@@ -60,7 +60,7 @@ public class FixtureManager implements IFixtureManager {
 	
 	public Fixture createFixture(long fixtureId, String competitionName, Team homeTeam, Team awayTeam, Date fixtureDate, Odds odds, Prediction prediction,
 		Result result) {
-		final Fixture fixture = new Fixture(fixtureId, competitionName, homeTeam, awayTeam, fixtureDate, odds, prediction, result);
+		Fixture fixture = new Fixture(fixtureId, competitionName, homeTeam, awayTeam, fixtureDate, odds, prediction, result);
 		fixtureDao.save(fixture);
 		return fixture;
 	}
@@ -70,13 +70,13 @@ public class FixtureManager implements IFixtureManager {
 	}
 
 	public void updateTeamInFixtures(Team oldTeam, Team newTeam) {
-		final String oldTeamName = oldTeam.getName();
-		final List<Fixture> fixturesWithCorrespondingHomeTeam = fixtureDao.findFixturesByHomeTeam(oldTeamName);
+		String oldTeamName = oldTeam.getName();
+		List<Fixture> fixturesWithCorrespondingHomeTeam = fixtureDao.findFixturesByHomeTeam(oldTeamName);
 		for (Fixture fixture : fixturesWithCorrespondingHomeTeam) {
 			fixture.setHomeTeam(newTeam);
 			fixtureDao.update(fixture);
 		}
-		final List<Fixture> fixturesWithCorrespondingAwayTeam = fixtureDao.findFixturesByAwayTeam(oldTeamName);
+		List<Fixture> fixturesWithCorrespondingAwayTeam = fixtureDao.findFixturesByAwayTeam(oldTeamName);
 		for (Fixture fixture : fixturesWithCorrespondingAwayTeam) {
 			fixture.setAwayTeam(newTeam);
 			fixtureDao.update(fixture);
