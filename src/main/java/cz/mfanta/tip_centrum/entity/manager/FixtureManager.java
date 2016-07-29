@@ -19,23 +19,6 @@ class FixtureManager implements IFixtureManager {
 	
 	private final IFixtureDao fixtureDao;
 
-	public IFixtureGroup getAllUpcomingFixtures() {
-		IFixtureGroup result = null;
-		// merge the fixtures from all the available competitions
-		Set<Competition> allComps = competitionManager.getAllCompetitions();
-		Iterator<Competition> compIt = allComps.iterator();
-		if (compIt.hasNext()) {
-			Competition comp = compIt.next();
-			result = getUpcomingFixturesForCompetition(comp);
-			while (compIt.hasNext()) {
-				comp = compIt.next();
-				IFixtureGroup group = getUpcomingFixturesForCompetition(comp);
-				result.merge(group);
-			}
-		}
-		return result;
-	}
-
 	public IFixtureGroup getAllFixtures() {
 		IFixtureGroup upcomingFixtures = getAllUpcomingFixtures();
 		IFixtureGroup storedFixtures = getStoredFixtures();
@@ -43,21 +26,10 @@ class FixtureManager implements IFixtureManager {
 		return upcomingFixtures;
 	}
 
-	public IFixtureGroup getStoredFixtures() {
-		FixtureGroup result = new FixtureGroup();
-		List<Fixture> storedFixtureList = fixtureDao.getAll();
-        storedFixtureList.forEach(result::addFixture);
-		return result;
-	}
-
-	public IFixtureGroup getUpcomingFixturesForCompetition(Competition competition) {
-		return fixtureReader.getFixturesForCompetition(competition);
-	}
-
 	public Fixture getFixture(long fixtureId) {
 		return fixtureDao.getById(fixtureId);
 	}
-	
+
 	public Fixture createFixture(long fixtureId, String competitionName, Team homeTeam, Team awayTeam, Date fixtureDate, Odds odds, Prediction prediction,
 		Result result) {
 		Fixture fixture = new Fixture(fixtureId, competitionName, homeTeam, awayTeam, fixtureDate, odds, prediction, result);
@@ -81,6 +53,34 @@ class FixtureManager implements IFixtureManager {
 			fixture.setAwayTeam(newTeam);
 			fixtureDao.update(fixture);
 		}
+	}
+
+	private IFixtureGroup getAllUpcomingFixtures() {
+		IFixtureGroup result = null;
+		// merge the fixtures from all the available competitions
+		Set<Competition> allComps = competitionManager.getAllCompetitions();
+		Iterator<Competition> compIt = allComps.iterator();
+		if (compIt.hasNext()) {
+			Competition comp = compIt.next();
+			result = getUpcomingFixturesForCompetition(comp);
+			while (compIt.hasNext()) {
+				comp = compIt.next();
+				IFixtureGroup group = getUpcomingFixturesForCompetition(comp);
+				result.merge(group);
+			}
+		}
+		return result;
+	}
+
+	private IFixtureGroup getStoredFixtures() {
+		FixtureGroup result = new FixtureGroup();
+		List<Fixture> storedFixtureList = fixtureDao.getAll();
+		storedFixtureList.forEach(result::addFixture);
+		return result;
+	}
+
+	private IFixtureGroup getUpcomingFixturesForCompetition(Competition competition) {
+		return fixtureReader.getFixturesForCompetition(competition);
 	}
 
 }
