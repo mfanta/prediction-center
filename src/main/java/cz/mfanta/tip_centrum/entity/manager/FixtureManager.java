@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
-public class FixtureManager implements IFixtureManager {
+class FixtureManager implements IFixtureManager {
 
 	private final IFixtureReader fixtureReader;
 	
