@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -27,6 +28,7 @@ import java.util.Arrays;
 import static cz.mfanta.tip_centrum.service.gui.GuiObjects.FIXTURE_TABLE_BODY_FONT;
 import static cz.mfanta.tip_centrum.service.gui.GuiObjects.FIXTURE_TABLE_HEADER_FONT;
 
+@Slf4j
 public class FixtureTableWrapper {
 
     private final EventBus eventBus;
@@ -61,6 +63,7 @@ public class FixtureTableWrapper {
 
     @Subscribe
     public void handleFixtureModelRefresh(FixtureModelRefreshedEvent event) {
+        log.info("Fixtures reloaded, scrolling fixture table to end.");
         scrollToEnd();
     }
 
