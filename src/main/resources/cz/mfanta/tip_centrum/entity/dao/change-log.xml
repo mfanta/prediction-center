@@ -18,7 +18,7 @@
      http://www.liquibase.org/documentation/changes/
     -->
 
-    <!--<changeSet id="1: initial database state" author="Martin Fanta">
+    <changeSet id="1: initial database state" author="Martin Fanta">
         <createTable tableName="Team">
             <column name="name" type="varchar(100)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -82,5 +82,5 @@
             <column name="awayTeamScore" type="integer"/>
         </createTable>
 
-    </changeSet>-->
+    </changeSet>
 </databaseChangeLog>
