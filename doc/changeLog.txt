@@ -22,3 +22,6 @@ Released version 0.2.5 with EventBus messaging pilot.
 
 Jul 15 2016
 Released version 0.2.8 (change jump due to release script testing) with fixtures scrolling to bottom after being loaded.
+
+Aug 24 2016
+Released version 0.2.9 really fixing scrolling to fixture table bottom.
