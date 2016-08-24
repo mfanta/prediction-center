@@ -104,7 +104,11 @@ public class FixtureTableWrapper {
     }
 
     private void scrollToEnd() {
-        fixtureTable.scrollRectToVisible(fixtureTable.getCellRect(fixtureTableModel.getRowCount() - 1, 0, true));
+        EventQueue.invokeLater(() ->
+                fixtureTable.scrollRectToVisible(
+                        fixtureTable.getCellRect(fixtureTableModel.getRowCount() - 1, 0, true)
+                )
+        );
     }
 
     private void addEventGeneratingSelectionListener() {
